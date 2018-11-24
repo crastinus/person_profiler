@@ -1,0 +1,149 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="imgui">
+      <UniqueIdentifier>{2d2d7377-18e5-4cd6-ad45-a3052fe21d78}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\opengl">
+      <UniqueIdentifier>{e8ae2af3-fd66-4c09-822c-029c19573aee}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\opengl\gl3w">
+      <UniqueIdentifier>{3cd024f7-c5f8-4e67-ae73-46a7253637e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\opengl\gl3w\GL">
+      <UniqueIdentifier>{f0cee55b-7adf-4cbd-ab08-4f8a60fd0aea}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\opengl\glfw">
+      <UniqueIdentifier>{f118687c-324c-4e76-9e09-79fc02440750}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="imgui\opengl\glfw\GLFW">
+      <UniqueIdentifier>{78e56516-bcdf-40fb-ad3f-e5408bd3b66c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="person_profiler.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\imgui_impl_glfw_gl3.cpp">
+      <Filter>imgui\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\run.cpp">
+      <Filter>imgui\opengl</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\gl3w\gl3w.c">
+      <Filter>imgui\opengl\gl3w</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\context.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\egl_context.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\init.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\input.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\monitor.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\vulkan.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\wgl_context.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_init.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_joystick.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_monitor.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_time.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_tls.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_window.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\window.c">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_rect_pack.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_textedit.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_truetype.h">
+      <Filter>imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\imgui_impl_glfw_gl3.h">
+      <Filter>imgui\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\run.hpp">
+      <Filter>imgui\opengl</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\gl3w\GL\gl3w.h">
+      <Filter>imgui\opengl\gl3w\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\gl3w\GL\glcorearb.h">
+      <Filter>imgui\opengl\gl3w\GL</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\egl_context.h">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\internal.h">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\wgl_context.h">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\win32_joystick.h">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\win32_platform.h">
+      <Filter>imgui\opengl\glfw</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\GLFW\glfw3.h">
+      <Filter>imgui\opengl\glfw\GLFW</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\GLFW\glfw3native.h">
+      <Filter>imgui\opengl\glfw\GLFW</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

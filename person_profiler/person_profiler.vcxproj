@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <VCProjectVersion>15.0</VCProjectVersion>
+    <ProjectGuid>{C538EFBA-A9ED-4917-BEB6-119D41F9DB25}</ProjectGuid>
+    <Keyword>Win32Proj</Keyword>
+    <RootNamespace>personprofiler</RootNamespace>
+    <WindowsTargetPlatformVersion>10.0.16299.0</WindowsTargetPlatformVersion>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <PlatformToolset>v141</PlatformToolset>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>Unicode</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="Shared">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SKIA_INCLUDE);$(SKIA_INCLUDE)/config;$(ProjectDir)/imgui/opengl/gl3w;$(ProjectDir)/imgui/opengl/glfw;$(SolutionDir)/person_profiler/SQLiteCpp/sqlite3;$(SolutionDir)/person_profiler/SQLiteCpp/include;$(SolutionDir)/person_profiler/json;$(ProjectDir)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(SKIA_INCLUDE);$(SKIA_INCLUDE)/config;$(ProjectDir)/imgui/opengl/gl3w;$(ProjectDir)/imgui/opengl/glfw;$(SolutionDir)/person_profiler/SQLiteCpp/sqlite3;$(SolutionDir)/person_profiler/SQLiteCpp/include;$(SolutionDir)/person_profiler/json;$(ProjectDir)</IncludePath>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_GLFW_WIN32;_CRT_SECURE_NO_WARNINGS;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;Opengl32.lib;$(SKIA_LIB_DEBUG);winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <SDLCheck>true</SDLCheck>
+      <PreprocessorDefinitions>_GLFW_WIN32;_CRT_SECURE_NO_WARNINGS;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ConformanceMode>true</ConformanceMode>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+    </ClCompile>
+    <Link>
+      <SubSystem>Console</SubSystem>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;Opengl32.lib;$(SKIA_LIB);winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="common\common.cpp" />
+    <ClCompile Include="db\cache.cpp" />
+    <ClCompile Include="db\day.cpp" />
+    <ClCompile Include="db\db.cpp" />
+    <ClCompile Include="db\model.cpp" />
+    <ClCompile Include="db\queries.cpp" />
+    <ClCompile Include="db\save.cpp" />
+    <ClCompile Include="imgui\imgui.cpp" />
+    <ClCompile Include="imgui\imgui_demo.cpp" />
+    <ClCompile Include="imgui\imgui_draw.cpp" />
+    <ClCompile Include="imgui\opengl\gl3w\gl3w.c" />
+    <ClCompile Include="imgui\opengl\glfw\context.c" />
+    <ClCompile Include="imgui\opengl\glfw\egl_context.c" />
+    <ClCompile Include="imgui\opengl\glfw\init.c" />
+    <ClCompile Include="imgui\opengl\glfw\input.c" />
+    <ClCompile Include="imgui\opengl\glfw\monitor.c" />
+    <ClCompile Include="imgui\opengl\glfw\vulkan.c" />
+    <ClCompile Include="imgui\opengl\glfw\wgl_context.c" />
+    <ClCompile Include="imgui\opengl\glfw\win32_init.c" />
+    <ClCompile Include="imgui\opengl\glfw\win32_joystick.c" />
+    <ClCompile Include="imgui\opengl\glfw\win32_monitor.c" />
+    <ClCompile Include="imgui\opengl\glfw\win32_time.c" />
+    <ClCompile Include="imgui\opengl\glfw\win32_tls.c" />
+    <ClCompile Include="imgui\opengl\glfw\win32_window.c" />
+    <ClCompile Include="imgui\opengl\glfw\window.c" />
+    <ClCompile Include="imgui\opengl\imgui_impl_glfw_gl3.cpp" />
+    <ClCompile Include="imgui\opengl\run.cpp" />
+    <ClCompile Include="model\day.cpp" />
+    <ClCompile Include="model\estimation.cpp" />
+    <ClCompile Include="model\measure.cpp" />
+    <ClCompile Include="model\measure_group.cpp" />
+    <ClCompile Include="model\value.cpp" />
+    <ClCompile Include="person_profiler.cpp" />
+    <ClCompile Include="rendering\rendering.cpp" />
+    <ClCompile Include="SQLiteCpp\sqlite3\sqlite3.c" />
+    <ClCompile Include="SQLiteCpp\src\Backup.cpp" />
+    <ClCompile Include="SQLiteCpp\src\Column.cpp" />
+    <ClCompile Include="SQLiteCpp\src\Database.cpp" />
+    <ClCompile Include="SQLiteCpp\src\Exception.cpp" />
+    <ClCompile Include="SQLiteCpp\src\Statement.cpp" />
+    <ClCompile Include="SQLiteCpp\src\Transaction.cpp" />
+    <ClCompile Include="system\system.cpp" />
+    <ClCompile Include="ui\day.cpp" />
+    <ClCompile Include="ui\day_type.cpp" />
+    <ClCompile Include="ui\helper\combo_box_content.cpp" />
+    <ClCompile Include="ui\helper\input.cpp" />
+    <ClCompile Include="ui\estimation.cpp" />
+    <ClCompile Include="ui\ui.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="common\common.hpp" />
+    <ClInclude Include="db\cache.hpp" />
+    <ClInclude Include="db\day.hpp" />
+    <ClInclude Include="db\db.hpp" />
+    <ClInclude Include="db\ddl.hpp" />
+    <ClInclude Include="db\model.hpp" />
+    <ClInclude Include="db\queries.hpp" />
+    <ClInclude Include="db\save.hpp" />
+    <ClInclude Include="imgui\imconfig.h" />
+    <ClInclude Include="imgui\imgui.h" />
+    <ClInclude Include="imgui\imgui_internal.h" />
+    <ClInclude Include="imgui\opengl\gl3w\GL\gl3w.h" />
+    <ClInclude Include="imgui\opengl\gl3w\GL\glcorearb.h" />
+    <ClInclude Include="imgui\opengl\glfw\egl_context.h" />
+    <ClInclude Include="imgui\opengl\glfw\GLFW\glfw3.h" />
+    <ClInclude Include="imgui\opengl\glfw\GLFW\glfw3native.h" />
+    <ClInclude Include="imgui\opengl\glfw\internal.h" />
+    <ClInclude Include="imgui\opengl\glfw\wgl_context.h" />
+    <ClInclude Include="imgui\opengl\glfw\win32_joystick.h" />
+    <ClInclude Include="imgui\opengl\glfw\win32_platform.h" />
+    <ClInclude Include="imgui\opengl\imgui_impl_glfw_gl3.h" />
+    <ClInclude Include="imgui\opengl\run.hpp" />
+    <ClInclude Include="imgui\stb_rect_pack.h" />
+    <ClInclude Include="imgui\stb_textedit.h" />
+    <ClInclude Include="imgui\stb_truetype.h" />
+    <ClInclude Include="model\day.hpp" />
+    <ClInclude Include="model\estimation.hpp" />
+    <ClInclude Include="model\measure.hpp" />
+    <ClInclude Include="model\measure_group.hpp" />
+    <ClInclude Include="model\value.hpp" />
+    <ClInclude Include="system\array_view.hpp" />
+    <ClInclude Include="system\system.hpp" />
+    <ClInclude Include="ui\day.hpp" />
+    <ClInclude Include="ui\day_type.hpp" />
+    <ClInclude Include="ui\helper\combo_box_content.hpp" />
+    <ClInclude Include="ui\helper\global.hpp" />
+    <ClInclude Include="ui\helper\input.hpp" />
+    <ClInclude Include="ui\estimation.hpp" />
+    <ClInclude Include="ui\helper\input_window.hpp" />
+    <ClInclude Include="ui\ui.hpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

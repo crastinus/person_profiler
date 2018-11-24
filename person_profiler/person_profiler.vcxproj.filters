@@ -1,0 +1,301 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="person_profiler.cpp" />
+    <ClCompile Include="imgui\opengl\glfw\context.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\egl_context.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\gl3w\gl3w.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui.cpp">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_demo.cpp">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\imgui_draw.cpp">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\imgui_impl_glfw_gl3.cpp">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\init.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\input.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\monitor.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\run.cpp">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\vulkan.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\wgl_context.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_init.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_joystick.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_monitor.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_time.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_tls.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\win32_window.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui\opengl\glfw\window.c">
+      <Filter>third_party\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteCpp\src\Backup.cpp">
+      <Filter>third_party\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteCpp\src\Column.cpp">
+      <Filter>third_party\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteCpp\src\Database.cpp">
+      <Filter>third_party\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteCpp\src\Exception.cpp">
+      <Filter>third_party\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteCpp\src\Statement.cpp">
+      <Filter>third_party\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteCpp\src\Transaction.cpp">
+      <Filter>third_party\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="SQLiteCpp\sqlite3\sqlite3.c">
+      <Filter>third_party\SQLiteCpp</Filter>
+    </ClCompile>
+    <ClCompile Include="rendering\rendering.cpp">
+      <Filter>rendering</Filter>
+    </ClCompile>
+    <ClCompile Include="db\db.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="model\day.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="db\model.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="db\cache.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="system\system.cpp">
+      <Filter>system</Filter>
+    </ClCompile>
+    <ClCompile Include="db\save.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="model\estimation.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="model\measure.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="model\value.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="db\queries.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="model\measure_group.cpp">
+      <Filter>model</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\ui.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\day.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\helper\combo_box_content.cpp">
+      <Filter>ui\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\helper\input.cpp">
+      <Filter>ui\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="common\common.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="db\day.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\estimation.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\day_type.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="imgui\opengl\glfw\egl_context.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\gl3w\GL\gl3w.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\gl3w\GL\glcorearb.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\GLFW\glfw3.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\GLFW\glfw3native.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imconfig.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\imgui_impl_glfw_gl3.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\imgui_internal.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\internal.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\run.hpp">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_rect_pack.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_textedit.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\stb_truetype.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\wgl_context.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\win32_joystick.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui\opengl\glfw\win32_platform.h">
+      <Filter>third_party\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="model\day.hpp">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="model\measure.hpp">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="model\estimation.hpp">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="model\value.hpp">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="db\save.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="db\db.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="db\model.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="db\cache.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="system\system.hpp">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="db\ddl.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="system\array_view.hpp">
+      <Filter>system</Filter>
+    </ClInclude>
+    <ClInclude Include="db\queries.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="model\measure_group.hpp">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\ui.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\day.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\helper\combo_box_content.hpp">
+      <Filter>ui\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\helper\input.hpp">
+      <Filter>ui\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\helper\global.hpp">
+      <Filter>ui\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="common\common.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="db\day.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\estimation.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\day_type.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\helper\input_window.hpp">
+      <Filter>ui\helper</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="third_party">
+      <UniqueIdentifier>{399f634a-28a0-4c9d-916f-9494dc5b944f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\SQLiteCpp">
+      <UniqueIdentifier>{d45b747c-c811-42dc-97c2-201c84d9b6fa}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="third_party\imgui">
+      <UniqueIdentifier>{04895d8d-081c-4d43-bcf8-143cc9a34760}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="model">
+      <UniqueIdentifier>{c274cde0-09cb-466d-9a71-c7366bb24362}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="db">
+      <UniqueIdentifier>{12899187-0bdf-4fe9-ac95-9a5fa4a002de}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="rendering">
+      <UniqueIdentifier>{1d9aa6d1-6f6a-4fab-8868-6f43a53a90d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui">
+      <UniqueIdentifier>{74d54a30-e8db-4783-a05c-d5685e8bce43}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="system">
+      <UniqueIdentifier>{e4253d3e-b372-4575-ab0a-1a5be49fba3b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ui\helper">
+      <UniqueIdentifier>{b83f6dcc-96f2-4a42-93c6-33cc39bd2066}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{67ede525-41ff-4d7f-8a06-b6dbe91a4a33}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,3 @@
+[submodule "person_profiler/SQLiteCpp"]
+	path = person_profiler/SQLiteCpp
+	url = https://github.com/crastinus/SQLiteCpp
