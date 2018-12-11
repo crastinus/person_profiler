@@ -10,3 +10,11 @@ measure_group_id & measure_group_id::operator=(int id) {
     this->id = id;
     return *this;
 }
+
+bool measure_group_id::operator<(measure_group_id const & other) const {
+    return id < other.id;
+}
+
+bool measure_group_id::operator==(measure_group_id const & other) const {
+    return id == other.id;
+}

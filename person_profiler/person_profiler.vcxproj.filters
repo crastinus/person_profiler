@@ -113,16 +113,10 @@
     <ClCompile Include="model\value.cpp">
       <Filter>model</Filter>
     </ClCompile>
-    <ClCompile Include="db\queries.cpp">
-      <Filter>db</Filter>
-    </ClCompile>
     <ClCompile Include="model\measure_group.cpp">
       <Filter>model</Filter>
     </ClCompile>
     <ClCompile Include="ui\ui.cpp">
-      <Filter>ui</Filter>
-    </ClCompile>
-    <ClCompile Include="ui\day.cpp">
       <Filter>ui</Filter>
     </ClCompile>
     <ClCompile Include="ui\helper\combo_box_content.cpp">
@@ -137,10 +131,22 @@
     <ClCompile Include="db\day.cpp">
       <Filter>db</Filter>
     </ClCompile>
-    <ClCompile Include="ui\estimation.cpp">
+    <ClCompile Include="db\measure.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\estimation_window.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="ui\day_type.cpp">
+    <ClCompile Include="ui\measure_window.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\day_type_window.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\day_window.cpp">
+      <Filter>ui\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\main_window.cpp">
       <Filter>ui</Filter>
     </ClCompile>
   </ItemGroup>
@@ -229,16 +235,10 @@
     <ClInclude Include="system\array_view.hpp">
       <Filter>system</Filter>
     </ClInclude>
-    <ClInclude Include="db\queries.hpp">
-      <Filter>db</Filter>
-    </ClInclude>
     <ClInclude Include="model\measure_group.hpp">
       <Filter>model</Filter>
     </ClInclude>
     <ClInclude Include="ui\ui.hpp">
-      <Filter>ui</Filter>
-    </ClInclude>
-    <ClInclude Include="ui\day.hpp">
       <Filter>ui</Filter>
     </ClInclude>
     <ClInclude Include="ui\helper\combo_box_content.hpp">
@@ -256,14 +256,32 @@
     <ClInclude Include="db\day.hpp">
       <Filter>db</Filter>
     </ClInclude>
-    <ClInclude Include="ui\estimation.hpp">
-      <Filter>ui</Filter>
-    </ClInclude>
-    <ClInclude Include="ui\day_type.hpp">
-      <Filter>ui</Filter>
-    </ClInclude>
     <ClInclude Include="ui\helper\input_window.hpp">
       <Filter>ui\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="db\measure.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="db\queries.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="model\measure_graph.hpp">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\estimation_window.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\measure_window.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\day_type_window.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\day_window.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\main_window.hpp">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

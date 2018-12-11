@@ -62,6 +62,7 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+      <AdditionalOptions>/std:c++17 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -82,6 +83,7 @@
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <ObjectFileName>$(IntDir)%(RelativeDir)</ObjectFileName>
+      <AdditionalOptions>/std:c++17 %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -97,7 +99,7 @@
     <ClCompile Include="db\day.cpp" />
     <ClCompile Include="db\db.cpp" />
     <ClCompile Include="db\model.cpp" />
-    <ClCompile Include="db\queries.cpp" />
+    <ClCompile Include="db\measure.cpp" />
     <ClCompile Include="db\save.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -134,11 +136,13 @@
     <ClCompile Include="SQLiteCpp\src\Statement.cpp" />
     <ClCompile Include="SQLiteCpp\src\Transaction.cpp" />
     <ClCompile Include="system\system.cpp" />
-    <ClCompile Include="ui\day.cpp" />
-    <ClCompile Include="ui\day_type.cpp" />
+    <ClCompile Include="ui\day_window.cpp" />
+    <ClCompile Include="ui\day_type_window.cpp" />
     <ClCompile Include="ui\helper\combo_box_content.cpp" />
     <ClCompile Include="ui\helper\input.cpp" />
-    <ClCompile Include="ui\estimation.cpp" />
+    <ClCompile Include="ui\estimation_window.cpp" />
+    <ClCompile Include="ui\main_window.cpp" />
+    <ClCompile Include="ui\measure_window.cpp" />
     <ClCompile Include="ui\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -148,6 +152,7 @@
     <ClInclude Include="db\db.hpp" />
     <ClInclude Include="db\ddl.hpp" />
     <ClInclude Include="db\model.hpp" />
+    <ClInclude Include="db\measure.hpp" />
     <ClInclude Include="db\queries.hpp" />
     <ClInclude Include="db\save.hpp" />
     <ClInclude Include="imgui\imconfig.h" />
@@ -170,17 +175,20 @@
     <ClInclude Include="model\day.hpp" />
     <ClInclude Include="model\estimation.hpp" />
     <ClInclude Include="model\measure.hpp" />
+    <ClInclude Include="model\measure_graph.hpp" />
     <ClInclude Include="model\measure_group.hpp" />
     <ClInclude Include="model\value.hpp" />
     <ClInclude Include="system\array_view.hpp" />
     <ClInclude Include="system\system.hpp" />
-    <ClInclude Include="ui\day.hpp" />
-    <ClInclude Include="ui\day_type.hpp" />
+    <ClInclude Include="ui\day_window.hpp" />
+    <ClInclude Include="ui\day_type_window.hpp" />
     <ClInclude Include="ui\helper\combo_box_content.hpp" />
     <ClInclude Include="ui\helper\global.hpp" />
     <ClInclude Include="ui\helper\input.hpp" />
-    <ClInclude Include="ui\estimation.hpp" />
+    <ClInclude Include="ui\estimation_window.hpp" />
     <ClInclude Include="ui\helper\input_window.hpp" />
+    <ClInclude Include="ui\main_window.hpp" />
+    <ClInclude Include="ui\measure_window.hpp" />
     <ClInclude Include="ui\ui.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

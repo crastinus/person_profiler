@@ -1,8 +1,8 @@
 #include "ui.hpp"
-#include "day.hpp"
-
+#include "day_window.hpp"
 #include <imgui/imgui.h>
 #include <imgui/opengl/run.hpp>
+#include "main_window.hpp"
 
 windows_storage windows_storage::storage;
 
@@ -12,13 +12,19 @@ void windows_storage::render_all() {
 
         auto win = it->second;
 
-        ImGui::Begin(win->name(), &win->show_);
+        // preventing closed window rendering
+        if (win->is_closed()) {
+            it = windows.erase(it);
+            continue;
+        }
+
+        ImGui::Begin(win->name(), &win->show_, win->initial_size());
         win->render();
         ImGui::End();
 
         win->after_render();
 
-        it = (win->is_closed() ? windows.erase(it) : ++it);
+        ++it;
     }
 }
 
@@ -60,6 +66,7 @@ windows_storage & windows_storage::instance() {
 void run_windows() {
    // window<test_window>();
     window<day_window>();
+    window<main_window>();
     imgui_run([](void*){
         windows_storage::instance().render_all();
     });

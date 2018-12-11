@@ -1,11 +1,11 @@
-#include "day.hpp"
+#include "day_window.hpp"
 #include <db/queries.hpp>
 #include <db/save.hpp>
 #include <imgui/imgui.h>
 #include "helper/global.hpp"
 #include <common/common.hpp>
 #include <ui/ui.hpp>
-#include "day_type.hpp"
+#include "day_type_window.hpp"
 
 static char const* format = "%Y.%m.%d";
 static float date_width = 80;
@@ -23,8 +23,8 @@ day_window::day_window(time_t timestamp)
 
     date_text_ = strtime(format, day_.day_timestamp);
 
-    day_type_ = req_day_type_by_day_id(day_.id);
-    day_type_text_ = "type:" + day_type_.name;
+    auto dt = req_day_type_by_day_id(day_.id);
+    day_type_holder_ = day_type_button(dt, [this](day_type d) { on_day_type(d); });
 
     //date_input_.update();
     tip_input_.update();
@@ -65,29 +65,21 @@ void day_window::render() {
     }
 
     ImGui::SameLine();
-    if (ImGui::Button(day_type_text_.c_str(), big_button_size())) {
-        window<day_type_window>([this](day_type dt) {on_day_type(dt); });
-    }
+    day_type_holder_.render();
 
     
     if (tip_input_.render_multiline()) {
         have_changes_ = true;
     }
-    
-
-
 }
 
 void day_window::after_render() {
 }
 
 void day_window::on_day_type(day_type new_day_type) {
-    day_type_ = new_day_type;
-    day_type_text_ = "type:" + day_type_.name;
-
     day_type_day dtd;
     dtd.day_id = day_.id;
-    dtd.day_type_id = day_type_.id;
+    dtd.day_type_id = day_type_holder_.value().id;
     save(dtd);
 }
 

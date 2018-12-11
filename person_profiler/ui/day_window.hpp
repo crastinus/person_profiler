@@ -1,5 +1,6 @@
 #include "ui.hpp"
 #include <model/day.hpp>
+#include "day_type_window.hpp"
 #include "helper/input.hpp"
 
 struct day_window : public window_inst {
@@ -16,10 +17,9 @@ private:
     void on_day_type(day_type new_day_type);
 
     std::string date_text_;
-    std::string day_type_text_;
 
     day day_;
-    day_type day_type_;
+    day_type_button day_type_holder_;;
 
     //input_text date_input_;
     input_text tip_input_;

@@ -2,7 +2,7 @@
 #include <time.h>
 #include "day.hpp"
 #include <db/model.hpp>
-#include "..\ui\day.hpp"
+//#include "..\ui\day.hpp"
 
 // never change this code
 time_t day_start(time_t ts) {
