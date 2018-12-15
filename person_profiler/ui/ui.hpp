@@ -7,22 +7,32 @@
 struct window_inst {
     
     bool show_ = true;
-    bool closed_ = false;
+    //bool closed_ = false;
 
     virtual char const* name() = 0;
     virtual void render() = 0;
     virtual void after_render() {}
+    virtual void before_render() {}
     virtual ImVec2 initial_size() {
         return ImVec2(0, 0);
     }
 
     void close() {
-        closed_ = true;
+        show_ = false;
     }
 
     bool is_closed() {
-        return closed_;
+        return !show_;
     }
+
+    void render_errors();
+
+    // checking for exceptions
+    bool before_render_operation_running_ = false;
+    bool render_operation_running_ = false;
+    bool after_render_operation_running_ = false;
+
+    std::vector<std::string> errors_;
 };
 
 struct windows_storage {
@@ -37,6 +47,10 @@ public:
     void render_all();   
 
     void close(char const* name);
+
+    void render_window(window_inst* win);
+
+    void save_rendering(window_inst* win, void (window_inst::*func)(), bool * flag);
 
     static windows_storage& instance();
 };

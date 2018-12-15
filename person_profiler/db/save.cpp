@@ -143,9 +143,14 @@ int save(measure const& m) {
 
     cache().del(m);
 
+    if (!m.active) {
+        bool have_dependent_data = false;
+        SQLite::Statement have_dep_data(db(), "SELECT count(*) FROM estimation WHERE measure_id = :measure_id and active = 1");
+    }
     // disabled type update
-    SQLite::Statement meas_updt(db(), "UPDATE measure SET name = :name WHERE id = :id");
+    SQLite::Statement meas_updt(db(), "UPDATE measure SET name = :name, type = :type WHERE id = :id");
     meas_updt.bind(":name", m.name);
+    meas_updt.bind(":type", static_cast<int>(m.type));
     meas_updt.bind(":id", m.id);
     meas_updt.exec();
 

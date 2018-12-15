@@ -5,12 +5,13 @@
 
 enum class measure_type {
     boolean = 1,
-    integer = 2
+    numeric = 2
 };
 
 struct measure {
     int id = 0;
     std::string name;
+    bool active;
     measure_type type;
     measure_group_id measure_group;
 };

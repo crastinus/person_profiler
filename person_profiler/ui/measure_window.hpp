@@ -3,6 +3,7 @@
 #include "ui.hpp"
 #include <functional>
 #include <model/measure.hpp>
+#include <model/measure_graph.hpp>
 
 struct measure_button;
 struct measure_window : public window_inst {
@@ -15,7 +16,16 @@ struct measure_window : public window_inst {
     }
 
 private:
+
+    void on_new_measure(std::string const& measure_name, measure_group_id mg_id);
+    void on_new_measure_group(std::string const& measure_group_name);
+
+    // show all measures or active. Default show active
+    bool show_all_ = false;
+
     measure_button * callback_;
+
+    measure_graph graph_;
 };
 
 struct measure_button {
@@ -35,5 +45,5 @@ private:
     std::string text_;
     std::shared_ptr<measure_window> win_;
 
-    friend struct measure;     
+    friend struct measure_window;     
 };

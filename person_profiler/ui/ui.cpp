@@ -13,22 +13,59 @@ void windows_storage::render_all() {
         auto win = it->second;
 
         // preventing closed window rendering
-        if (win->is_closed()) {
+        if (!win->show_) {
             it = windows.erase(it);
             continue;
         }
 
-        ImGui::Begin(win->name(), &win->show_, win->initial_size());
-        win->render();
-        ImGui::End();
-
-        win->after_render();
+        // save render window
+        render_window(win.get());
 
         ++it;
     }
 }
 
 void windows_storage::close(char const * name) {
+}
+
+struct ScopeRender {
+    ScopeRender(window_inst* win) {
+        ImGui::Begin(win->name(), &win->show_, win->initial_size());
+    }
+    ~ScopeRender() {
+        ImGui::End();
+    }
+};
+
+void windows_storage::render_window(window_inst * win) try {
+    save_rendering(win, &window_inst::before_render, &win->before_render_operation_running_);
+
+    {
+        ScopeRender render(win);
+        win->render_errors();
+        save_rendering(win, &window_inst::render, &win->render_operation_running_);
+    }
+
+    save_rendering(win, &window_inst::after_render, &win->after_render_operation_running_);
+}
+catch (std::exception& ex) {
+    std::string exception = "Exception ";
+    win->errors_.push_back(exception + ex.what());
+}
+catch (...) {
+    win->errors_.push_back("Unknown exception");
+}
+
+void windows_storage::save_rendering(window_inst* win, void(window_inst::* func)(), bool * flag) {
+
+    if (*flag) {
+        return;
+    }
+
+    *flag = true;
+    (win->*func)();
+    *flag = false;
+
 }
 
 windows_storage & windows_storage::instance() {
@@ -70,4 +107,28 @@ void run_windows() {
     imgui_run([](void*){
         windows_storage::instance().render_all();
     });
+}
+
+void window_inst::render_errors() {
+    constexpr size_t max_errors_count = 5;
+
+    if (errors_.empty()) {
+        return;
+    }
+
+    if (before_render_operation_running_) {
+        ImGui::Text("Exception in before_render");
+    }
+
+    if (render_operation_running_) {
+        ImGui::Text("Exception in render");
+    }
+
+    if (after_render_operation_running_) {
+        ImGui::Text("Exception in after_render");
+    }
+
+    for (std::string const& err : errors_) {
+        ImGui::Text(err.c_str());
+    }
 }

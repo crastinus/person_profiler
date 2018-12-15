@@ -11,6 +11,7 @@ CREATE TABLE measure_group (
 CREATE TABLE measure (
  id   integer  PRIMARY KEY AUTOINCREMENT,
  name text NOT NULL,
+ active int NOT NULL DEFAULT 1,
  type integer NOT NULL, 
  measure_group_id integer NOT NULL,
  FOREIGN KEY (measure_group_id) REFERENCES measure_group(id)

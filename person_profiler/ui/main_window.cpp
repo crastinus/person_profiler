@@ -22,5 +22,5 @@ void main_window::render() {
     }
 
     // ethernal window
-    closed_ = false;
+    show_ = true;
 }

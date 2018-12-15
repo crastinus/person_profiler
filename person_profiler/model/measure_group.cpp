@@ -2,7 +2,7 @@
 #include <db/model.hpp>
 
 
-measure_group_id::operator measure_group const() {
+measure_group_id::operator measure_group const() const {
     return get_model<measure_group>(id);
 }
 

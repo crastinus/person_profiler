@@ -12,7 +12,7 @@ struct measure_group {
 struct measure_group_id {
     int id;
 
-    operator measure_group const();
+    operator measure_group const() const;
 
     measure_group_id& operator = (int id);
 

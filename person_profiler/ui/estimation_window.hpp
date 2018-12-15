@@ -9,16 +9,26 @@
 struct estimation_window : public window_inst {
 
     estimation_window(day_type d = {}, measure m = {});
+    ~estimation_window();
 
     // estimation but and measure
     virtual char const* name() override { return "estimation"; }
     virtual void render() override;
     virtual ImVec2 initial_size() override { return ImVec2(270, 270); }
+    virtual void before_render() override;
     
 private:
 
     void on_day_type(day_type d);
     void on_measure(measure m);
+
+    void emit_changes();
+    void emit_new();
+
+    void init_estimations();
+
+    bool have_changes_ = false;
+    bool add_new_ = false;
 
     day_type_button day_type_button_;
     measure_button measure_button_;
