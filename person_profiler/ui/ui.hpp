@@ -28,9 +28,11 @@ struct window_inst {
     void render_errors();
 
     // checking for exceptions
-    bool before_render_operation_running_ = false;
-    bool render_operation_running_ = false;
-    bool after_render_operation_running_ = false;
+    size_t before_render_operation_running_ = 0;
+    size_t render_operation_running_ = 0;
+    size_t after_render_operation_running_ = 0;
+
+    void save_error(std::string const& err);
 
     std::vector<std::string> errors_;
 };
@@ -50,7 +52,7 @@ public:
 
     void render_window(window_inst* win);
 
-    void save_rendering(window_inst* win, void (window_inst::*func)(), bool * flag);
+    void save_rendering(window_inst* win, void (window_inst::*func)(), size_t * flag);
 
     static windows_storage& instance();
 };

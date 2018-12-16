@@ -25,10 +25,14 @@ private:
     void emit_changes();
     void emit_new();
 
+    void save_form();
+
     void init_estimations();
 
     bool have_changes_ = false;
     bool add_new_ = false;
+    bool have_dependencies_ = false;
+    bool reverse_ = false;
 
     day_type_button day_type_button_;
     measure_button measure_button_;

@@ -1,14 +1,68 @@
 #include "estimation_window.hpp"
 #include <imgui/imgui.h>
 #include <db/measure.hpp>
+#include <db/save.hpp>
+#include <common/concat.hpp>
 
 estimation_window::estimation_window(day_type d, measure m)
     : day_type_button_(d, [this](day_type d) { on_day_type(d); }),
     measure_button_(m, [this](measure m) { on_measure(m); }) {
 }
 
-estimation_window::~estimation_window()
-{
+estimation_window::~estimation_window() {
+
+}
+void estimation_window::save_form() {
+    if (!(have_changes_ || add_new_)) {
+        return;
+    }
+
+    if (have_dependencies_) {
+        // front estimation might be deleted
+        auto estim = req_find_estimation(measure_button_.value().id, day_type_button_.value().id);
+        estim.active = false;
+        save(estim);
+    }
+
+        int prev_id = 0;
+        bool reverse = estimations_.front().reverse;
+        float prev_weight = (estimations_.front().reverse ? std::numeric_limits<int>::max() : 0);
+        float prev_border = 0;
+
+        // checking
+        for (estimation const& e : estimations_) {
+            if (prev_border >= e.temp_float) {
+                throw std::logic_error(concat("Border value ", prev_border, " greater then ", e.temp_float));
+            }
+
+            if (reverse && prev_weight <= e.temp_weight) {
+                throw std::logic_error(concat("Prev weight (reversed) ", prev_border, " less then ", e.temp_weight));
+            } 
+            
+            if (!reverse && prev_weight >= e.temp_weight) {
+                throw std::logic_error(concat("Prev weight ", prev_border, " greater then ", e.temp_weight));
+            }
+
+            prev_border = e.temp_float;
+            prev_weight = e.temp_weight;
+        }
+
+        auto mtype = measure_button_.value().type;
+        for (estimation& e : estimations_) {
+            e.active = false;
+            e.border = (mtype == measure_type::boolean ? e.temp_bool : e.temp_float);
+            e.weight = e.temp_weight;
+        }
+
+        estimations_.front().active = true;
+
+        // saving
+        for (auto it = estimations_.rbegin(); it != estimations_.rend(); ++it) {
+            it->next = prev_id;
+            prev_id = save(*it);
+        }
+
+        errors_.clear();
 }
 
 void estimation_window::render() {
@@ -22,13 +76,19 @@ void estimation_window::render() {
         return;
     }
 
+    ImGui::Checkbox("reverse", &reverse_);
+
+    int counter = 0;
 
     measure const& m = measure_button_.value();
     for (auto it = estimations_.begin(); it != estimations_.end(); ++it) {
       
-        ImGui::PushID("border");
-        ImGui::PushID("remove");
+        ImGui::PushID(++counter);
+        //ImGui::PushID("remove");
 
+        ImGui::Separator();
+
+        ImGui::PushItemWidth(200);
         switch (m.type) {
         case measure_type::boolean: {
             if (ImGui::Checkbox("border", &it->temp_bool)) {
@@ -36,8 +96,13 @@ void estimation_window::render() {
             }
         } break;
         case measure_type::numeric: {
-            if (ImGui::InputFloat("border", &it->temp_float)) {
-                emit_changes();
+            if (ImGui::InputFloat("border", &it->temp_float, 0.0f, 0.0f, 2)) {
+                if (it->temp_float < 0) {
+                    it->temp_float = it->border;
+                }
+                else {
+                    emit_changes();
+                }
             }
             ImGui::SameLine();
             if (ImGui::Button("remove") && estimations_.size() > 1) {
@@ -49,9 +114,22 @@ void estimation_window::render() {
         break;
         }
 
-        ImGui::PopID();
+        ImGui::SameLine();
+        if (ImGui::InputFloat("weight", &it->temp_weight, 0.0f, 0.0f, 2)) {
+            if (it->temp_weight < 0) {
+                it->temp_weight = it->weight;
+            }
+            else {
+                emit_changes();
+            }
+        }
+        
+
+        //ImGui::PopID();
         ImGui::PopID();
     }
+
+    ImGui::Separator();
 
     // creating new node at end
     if (m.type != measure_type::boolean && ImGui::Button("Add")) {
@@ -59,9 +137,19 @@ void estimation_window::render() {
         val.id = 0;
         val.border = val.border + (val.reverse ? -1 : 1);
         val.temp_float = val.border;
+        val.measure = measure_button_.value().id;
+        val.day_type = day_type_button_.value().id;
         estimations_.push_back(val);
         emit_new();
+        
+        ImGui::SameLine();
     }
+
+    if (ImGui::Button("Save")) {
+        save_form();
+    }
+
+    
 }
 
 void estimation_window::before_render() {
@@ -91,6 +179,9 @@ void estimation_window::emit_new() {
 void estimation_window::init_estimations() {
 
     estimations_.push_back(req_find_estimation(measure_button_.value().id, day_type_button_.value().id));
+
+    have_dependencies_ = have_dependencies(estimations_.back());
+    reverse_ = estimations_.back().reverse;
 
     while (estimations_.back().next != 0) {
         estimations_.push_back(estimations_.back().next);

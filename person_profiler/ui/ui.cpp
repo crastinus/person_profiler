@@ -3,6 +3,7 @@
 #include <imgui/imgui.h>
 #include <imgui/opengl/run.hpp>
 #include "main_window.hpp"
+#include <unordered_set>
 
 windows_storage windows_storage::storage;
 
@@ -50,21 +51,23 @@ void windows_storage::render_window(window_inst * win) try {
 }
 catch (std::exception& ex) {
     std::string exception = "Exception ";
-    win->errors_.push_back(exception + ex.what());
+    win->save_error(exception + ex.what());
 }
 catch (...) {
-    win->errors_.push_back("Unknown exception");
+    win->save_error("Unknown exception");
 }
 
-void windows_storage::save_rendering(window_inst* win, void(window_inst::* func)(), bool * flag) {
+void windows_storage::save_rendering(window_inst* win, void(window_inst::* func)(), size_t * err_cnt) {
 
-    if (*flag) {
+    constexpr size_t max_errors_count = 5;
+
+    if (*err_cnt >= max_errors_count) {
         return;
     }
 
-    *flag = true;
+    ++*err_cnt;
     (win->*func)();
-    *flag = false;
+    *err_cnt = 0;
 
 }
 
@@ -116,19 +119,32 @@ void window_inst::render_errors() {
         return;
     }
 
-    if (before_render_operation_running_) {
-        ImGui::Text("Exception in before_render");
+    if (before_render_operation_running_ > 0) {
+        ImGui::Text("Fatal exception in before_render");
     }
 
-    if (render_operation_running_) {
-        ImGui::Text("Exception in render");
+    if (render_operation_running_ > 0) {
+        ImGui::Text("Fatal exception in render");
     }
 
-    if (after_render_operation_running_) {
-        ImGui::Text("Exception in after_render");
+    if (after_render_operation_running_ > 0) {
+        ImGui::Text("Fatal exception in after_render");
+    }
+
+    if (errors_.size() > max_errors_count) {
+        errors_.erase(errors_.begin(), errors_.begin() + 1);
     }
 
     for (std::string const& err : errors_) {
         ImGui::Text(err.c_str());
     }
+}
+
+void window_inst::save_error(std::string const & err) {
+    auto it = std::find(errors_.begin(), errors_.end(), err);
+    if (it != errors_.end()) {
+        errors_.erase(it);
+    }
+
+    errors_.push_back(err);
 }

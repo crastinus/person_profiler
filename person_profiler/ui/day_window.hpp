@@ -2,6 +2,7 @@
 #include <model/day.hpp>
 #include "day_type_window.hpp"
 #include "helper/input.hpp"
+#include <model/measure_graph.hpp>
 
 struct day_window : public window_inst {
 
@@ -19,7 +20,11 @@ private:
     std::string date_text_;
 
     day day_;
-    day_type_button day_type_holder_;;
+    day_type_button day_type_holder_;
+
+    measure_values_graph graph_;
+
+    bool blocked_;
 
     //input_text date_input_;
     input_text tip_input_;

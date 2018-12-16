@@ -143,10 +143,13 @@
     <ClCompile Include="ui\day_type_window.cpp">
       <Filter>ui</Filter>
     </ClCompile>
-    <ClCompile Include="ui\day_window.cpp">
-      <Filter>ui\helper</Filter>
-    </ClCompile>
     <ClCompile Include="ui\main_window.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="common\string_streambuf.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\day_window.cpp">
       <Filter>ui</Filter>
     </ClCompile>
   </ItemGroup>
@@ -282,6 +285,15 @@
     </ClInclude>
     <ClInclude Include="ui\main_window.hpp">
       <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="common\concat.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\size_for_output.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\string_streambuf.hpp">
+      <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

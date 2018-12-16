@@ -31,5 +31,6 @@ struct estimation {
     // interface issues
     bool temp_bool;
     float temp_float;
+    float temp_weight;
 };
 

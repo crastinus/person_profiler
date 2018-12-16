@@ -47,7 +47,13 @@ day_type_button::~day_type_button() {
     }
 }
 
-void day_type_button::render() {
+void day_type_button::render(bool blocked) {
+
+    if (blocked) {
+        ImGui::Text(text_.c_str());
+        return;
+    }
+
     if (ImGui::Button(text_.c_str(), big_button_size())) {
         dt_win_ = window<day_type_window>(this);
     }

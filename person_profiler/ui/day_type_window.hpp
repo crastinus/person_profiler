@@ -28,7 +28,7 @@ struct day_type_button {
     day_type_button(day_type d = {}, std::function<void(day_type)> callback = {});
     ~day_type_button();
 
-    void render();
+    void render(bool blocked =false);
 
     day_type const& value() const;
 

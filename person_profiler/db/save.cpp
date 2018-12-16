@@ -1,6 +1,7 @@
 #include "save.hpp"
 #include "db.hpp"
 #include "cache.hpp"
+#include "measure.hpp"
 
 int save(value const& v) {
     if (v.id == 0) {
@@ -95,7 +96,7 @@ void save(day_type_day const & dtd) {
 int save(estimation const& e) {
 
     if (e.id == 0) {
-        SQLite::Statement estim_insert(db(), "INSERT INTO estimation(started, expired, active, weight, border, reverse, measure_id, next) VALUES(:started, :expired, :active, :weight, :border, :reverse, :measure_id, :next)");
+        SQLite::Statement estim_insert(db(), "INSERT INTO estimation(started, expired, active, weight, border, reverse, measure_id, next, day_type_id) VALUES(:started, :expired, :active, :weight, :border, :reverse, :measure_id, :next, :day_type_id)");
         estim_insert.bind(":started", e.started);
         estim_insert.bind(":expired", e.expired);
         estim_insert.bind(":active", (int)e.active);
@@ -104,6 +105,7 @@ int save(estimation const& e) {
         estim_insert.bind(":reverse", e.reverse);
         estim_insert.bind(":measure_id", e.measure.id);
         estim_insert.bind(":next", e.next.id);
+        estim_insert.bind(":day_type_id", e.day_type.id);
         estim_insert.exec();
 
         SQLite::Statement get_max_id(db(), "SELECT max(id) from estimation");
@@ -143,10 +145,19 @@ int save(measure const& m) {
 
     cache().del(m);
 
-    if (!m.active) {
-        bool have_dependent_data = false;
-        SQLite::Statement have_dep_data(db(), "SELECT count(*) FROM estimation WHERE measure_id = :measure_id and active = 1");
+    if (!m.active && !have_dependencies(m)) {
+
+        SQLite::Statement delq(db(), "DELETE FROM measure WHERE id = :id");
+        SQLite::Statement delqe(db(), "DELETE FROM estimation WHERE measure_id = :id");
+
+        delqe.bind(":id", m.id);
+        delq.bind(":id", m.id);
+
+        delqe.exec();
+        delq.exec();
+        return 0;
     }
+
     // disabled type update
     SQLite::Statement meas_updt(db(), "UPDATE measure SET name = :name, type = :type WHERE id = :id");
     meas_updt.bind(":name", m.name);
