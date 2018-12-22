@@ -190,6 +190,7 @@
     <ClInclude Include="ui\day_window.hpp" />
     <ClInclude Include="ui\day_type_window.hpp" />
     <ClInclude Include="ui\helper\combo_box_content.hpp" />
+    <ClInclude Include="ui\helper\date_picker.hpp" />
     <ClInclude Include="ui\helper\date_widget.hpp" />
     <ClInclude Include="ui\helper\global.hpp" />
     <ClInclude Include="ui\helper\id_scope.hpp" />

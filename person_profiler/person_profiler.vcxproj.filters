@@ -316,6 +316,9 @@
     <ClInclude Include="ui\helper\id_scope.hpp">
       <Filter>ui\helper</Filter>
     </ClInclude>
+    <ClInclude Include="ui\helper\date_picker.hpp">
+      <Filter>ui\helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="third_party">

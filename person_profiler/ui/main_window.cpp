@@ -7,6 +7,7 @@
 #include "estimation_window.hpp"
 #include "plan_window.hpp"
 #include "statistics_window.hpp"
+#include "helper/date_picker.hpp"
 
 
 void main_window::render() {
@@ -29,6 +30,11 @@ void main_window::render() {
 
     if (ImGui::Button("statistics")) {
         window<statistics_window>();
+    }
+
+
+    if (ImGui::Button("day_picker")) {
+        window<date_picker>();
     }
 
     // ethernal window
