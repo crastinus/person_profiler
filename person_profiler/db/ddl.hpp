@@ -41,6 +41,14 @@ CREATE TABLE day_type_day (
 CREATE UNIQUE INDEX day_type_day_idx ON day_type_day(day_id);
 
 
+CREATE TABLE forbidden_measure_group (
+    day_id integer NOT NULL,
+    measure_group_id integer NOT NULL,
+    FOREIGN KEY (day_id) REFERENCES day(id),
+    FOREIGN KEY (measure_group_id) REFERENCES measure_group(id)
+);
+
+
 CREATE TABLE estimation
 (
  id         integer PRIMARY KEY AUTOINCREMENT,

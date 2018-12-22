@@ -152,6 +152,12 @@
     <ClCompile Include="ui\day_window.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="ui\statistics_window.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\plan_window.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\opengl\glfw\egl_context.h">
@@ -294,6 +300,21 @@
     </ClInclude>
     <ClInclude Include="common\string_streambuf.hpp">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\statistics_window.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\plan_window.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\helper\date_widget.hpp">
+      <Filter>ui\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="common\time.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\helper\id_scope.hpp">
+      <Filter>ui\helper</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

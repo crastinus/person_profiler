@@ -4,7 +4,7 @@
 
 
 
-measure_id::operator measure const() {
+measure_id::operator measure const() const {
     return get_model<measure>(id);
 }
 

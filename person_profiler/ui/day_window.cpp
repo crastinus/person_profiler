@@ -6,21 +6,29 @@
 #include <common/common.hpp>
 #include <ui/ui.hpp>
 #include "day_type_window.hpp"
+#include "helper/id_scope.hpp"
 
 static char const* format = "%Y.%m.%d";
 static float date_width = 80;
 
-day_window::day_window(time_t timestamp) 
+day_window::day_window(time_t timestamp, bool planning) 
     : //date_input_(date_text_, "###date", 80, 20), 
-    tip_input_(day_.comment, "comment", 700, 100),
+    tip_input_(day_.comment, "comment", 700, 100), planning_(planning),
     next_ts_(0), prev_ts_(0), have_changes_(false) {
 
-    blocked_ = (day_start(timestamp) != current_day_start());
+
+    //if (planning_ && day_start(timestamp) < current_day_start()) {
+    //    planning_ = false;
+    //}
+
+    blocked_ = (day_start(timestamp) < current_day_start()) && !planning_;
 
     day_ = req_day_by_ts(day_start(timestamp));
     if (day_.id == 0) {
         save(day_);
     }
+    
+    disabled_measure_groups_ = disabled_measure_groups(day_.id);
 
     date_text_ = strtime(format, day_.day_timestamp);
 
@@ -30,8 +38,11 @@ day_window::day_window(time_t timestamp)
     if (day_.id != 0) {
         graph_ = req_current_measure_graph_for_day(day_.id);
     }
+    
+    if (graph_.empty() && dt.id != 0) {
+        graph_ = req_current_measure_graph(dt.id);
+    }
 
-    //date_input_.update();
     tip_input_.update();
 
     std::tie(prev_ts_, next_ts_) = req_prev_next_day(day_.day_timestamp);
@@ -52,7 +63,7 @@ void day_window::render() {
     
     // date rendering
     if (prev_ts_ != 0 && ImGui::Button("Prev", button_size()) ) {
-        window<day_window>(prev_ts_);
+        window<day_window>(prev_ts_, planning_);
     }
     
     ImGui::SameLine();
@@ -66,7 +77,7 @@ void day_window::render() {
     }
 
     if (next_ts_ != 0 && ImGui::Button("Next", button_size())) {
-        window<day_window>(next_ts_);
+        window<day_window>(next_ts_, planning_);
     }
 
     ImGui::SameLine();
@@ -80,9 +91,31 @@ void day_window::render() {
     for (auto&[mg_id, vec] : graph_) {
         measure_group mg = mg_id;
 
-        ImGui::PushID(mg.id);
+        id_scope push_id(mg.id);
+
+        bool disabled = (disabled_measure_groups_.count(mg_id.id) != 0);
+        if (disabled && blocked_) {
+            continue;
+        }
 
         if (ImGui::CollapsingHeader(mg.name.c_str())) {
+
+            // disabling logic
+            if (ImGui::Checkbox("disabled", &disabled)) {
+                if (disabled) {
+                    disable_measure_group_for_day(day_.id, mg_id.id);
+                    disabled_measure_groups_.insert(mg_id.id);
+                }
+                else {
+                    enable_measure_group_for_day(day_.id, mg_id.id);
+                    disabled_measure_groups_.erase(mg_id.id);
+                }
+            }
+
+            if (disabled) {
+                continue;
+            }
+
             for (value_info& vi : vec) {
                 ImGui::Text(vi.value_name_.c_str());
                 ImGui::SameLine();
@@ -91,17 +124,34 @@ void day_window::render() {
                 switch (vi.type_) {
                 case measure_type::boolean: {
                     if (ImGui::Checkbox("value", &vi.bool_value_)) {
+                        vi.value_.val = static_cast<double>(vi.bool_value_);
                     }
                 } break;
                 case measure_type::numeric: {
                     if (ImGui::InputFloat("value", &vi.float_value_, 0.0f, 0.0f, 2)) {
+                        vi.value_.val = static_cast<double>(vi.float_value_);
                     }
                 } break;
                 }
             }
         }
+    }
 
-        ImGui::PopID();
+    ImGui::Separator();
+    if (ImGui::Button("Save")) {
+
+        if (day_.id == 0) {
+            throw std::runtime_error("day.id == 0");
+        }
+
+        for (auto& [mg_id, vec] : graph_) {
+            for (auto& vi : vec) {
+                vi.value_.day.id = day_.id;
+                vi.value_.id = save(vi.value_);
+            }
+        }
+
+        errors_.clear();
     }
 }
 

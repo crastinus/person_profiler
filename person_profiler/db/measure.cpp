@@ -107,6 +107,38 @@ bool have_dependencies(measure const& m) {
     return static_cast<int>(check.getColumn(0)) > 0;
 }
 
+std::unordered_set<int> disabled_measure_groups(int day_id) {
+    std::unordered_set<int> result;
+    if (day_id == 0) {
+        return result;
+    }
+
+    SQLite::Statement stmt(db(), "SELECT measure_group_id FROM forbidden_measure_group WHERE day_id = :day_id");
+    stmt.bind(":day_id", day_id);
+    
+    while (stmt.executeStep()) {
+        result.insert(stmt.getColumn(0));
+    }
+
+    return result;
+}
+
+void disable_measure_group_for_day(int day_id, int measure_group_id) {
+    SQLite::Statement stmt(db(), "INSERT INTO forbidden_measure_group(day_id, measure_group_id) VALUES(:day_id, :measure_group_id)");
+    stmt.bind(":day_id", day_id);
+    stmt.bind(":measure_group_id", measure_group_id);
+
+    stmt.executeStep();
+}
+
+void enable_measure_group_for_day(int day_id, int measure_group_id) {
+    SQLite::Statement stmt(db(), "DELETE FROM  forbidden_measure_group WHERE day_id = :day_id AND measure_group_id = :measure_group_id");
+    stmt.bind(":day_id", day_id);
+    stmt.bind(":measure_group_id", measure_group_id);
+
+    stmt.executeStep();
+}
+
 measure req_measure(int id) {
     measure result;
 
@@ -187,9 +219,9 @@ measure_values_graph req_current_measure_graph(std::string const& whereStmt) {
 
 
         value v;
-        v.id = stmt.getColumn(13);
-        v.val = stmt.getColumn(14);
-        v.day = stmt.getColumn(15);
+        v.id = stmt.getColumn(14);
+        v.val = stmt.getColumn(15);
+        v.day = stmt.getColumn(16);
         v.estimation = e.id;
 
         // real time rendering value

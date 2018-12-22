@@ -5,6 +5,8 @@
 #include "day_type_window.hpp"
 #include "measure_window.hpp"
 #include "estimation_window.hpp"
+#include "plan_window.hpp"
+#include "statistics_window.hpp"
 
 
 void main_window::render() {
@@ -19,6 +21,14 @@ void main_window::render() {
 
     if (ImGui::Button("estimation")) {
         window<estimation_window>();
+    }
+
+    if (ImGui::Button("plan")) {
+        window<plan_window>();
+    }
+
+    if (ImGui::Button("statistics")) {
+        window<statistics_window>();
     }
 
     // ethernal window

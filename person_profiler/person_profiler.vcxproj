@@ -144,6 +144,8 @@
     <ClCompile Include="ui\estimation_window.cpp" />
     <ClCompile Include="ui\main_window.cpp" />
     <ClCompile Include="ui\measure_window.cpp" />
+    <ClCompile Include="ui\plan_window.cpp" />
+    <ClCompile Include="ui\statistics_window.cpp" />
     <ClCompile Include="ui\ui.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -151,6 +153,7 @@
     <ClInclude Include="common\concat.hpp" />
     <ClInclude Include="common\size_for_output.hpp" />
     <ClInclude Include="common\string_streambuf.hpp" />
+    <ClInclude Include="common\time.hpp" />
     <ClInclude Include="db\cache.hpp" />
     <ClInclude Include="db\day.hpp" />
     <ClInclude Include="db\db.hpp" />
@@ -187,12 +190,16 @@
     <ClInclude Include="ui\day_window.hpp" />
     <ClInclude Include="ui\day_type_window.hpp" />
     <ClInclude Include="ui\helper\combo_box_content.hpp" />
+    <ClInclude Include="ui\helper\date_widget.hpp" />
     <ClInclude Include="ui\helper\global.hpp" />
+    <ClInclude Include="ui\helper\id_scope.hpp" />
     <ClInclude Include="ui\helper\input.hpp" />
     <ClInclude Include="ui\estimation_window.hpp" />
     <ClInclude Include="ui\helper\input_window.hpp" />
     <ClInclude Include="ui\main_window.hpp" />
     <ClInclude Include="ui\measure_window.hpp" />
+    <ClInclude Include="ui\plan_window.hpp" />
+    <ClInclude Include="ui\statistics_window.hpp" />
     <ClInclude Include="ui\ui.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

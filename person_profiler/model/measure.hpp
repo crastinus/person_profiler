@@ -19,7 +19,7 @@ struct measure {
 struct measure_id {
     int id;
      
-    operator measure const();
+    operator measure const() const;
 
     measure_id& operator = (int id);
 };

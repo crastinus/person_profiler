@@ -24,45 +24,46 @@ void estimation_window::save_form() {
         save(estim);
     }
 
-        int prev_id = 0;
-        bool reverse = estimations_.front().reverse;
-        float prev_weight = (estimations_.front().reverse ? std::numeric_limits<int>::max() : 0);
-        float prev_border = 0;
+    int prev_id = 0;
+    bool reverse = estimations_.front().reverse;
+    float prev_weight = (estimations_.front().reverse ? std::numeric_limits<int>::max() : 0);
+    float prev_border = 0;
 
-        // checking
-        for (estimation const& e : estimations_) {
-            if (prev_border >= e.temp_float) {
-                throw std::logic_error(concat("Border value ", prev_border, " greater then ", e.temp_float));
-            }
-
-            if (reverse && prev_weight <= e.temp_weight) {
-                throw std::logic_error(concat("Prev weight (reversed) ", prev_border, " less then ", e.temp_weight));
-            } 
-            
-            if (!reverse && prev_weight >= e.temp_weight) {
-                throw std::logic_error(concat("Prev weight ", prev_border, " greater then ", e.temp_weight));
-            }
-
-            prev_border = e.temp_float;
-            prev_weight = e.temp_weight;
+    // checking
+    for (estimation const& e : estimations_) {
+        measure m = e.measure;
+        if (m.type == measure_type::numeric && prev_border >= e.temp_float) {
+            throw std::logic_error(concat("Border value ", prev_border, " greater then ", e.temp_float));
         }
 
-        auto mtype = measure_button_.value().type;
-        for (estimation& e : estimations_) {
-            e.active = false;
-            e.border = (mtype == measure_type::boolean ? e.temp_bool : e.temp_float);
-            e.weight = e.temp_weight;
+        if (reverse && prev_weight <= e.temp_weight) {
+            throw std::logic_error(concat("Prev weight (reversed) ", prev_border, " less then ", e.temp_weight));
+        } 
+        
+        if (!reverse && prev_weight >= e.temp_weight) {
+            throw std::logic_error(concat("Prev weight ", prev_border, " greater then ", e.temp_weight));
         }
 
-        estimations_.front().active = true;
+        prev_border = e.temp_float;
+        prev_weight = e.temp_weight;
+    }
 
-        // saving
-        for (auto it = estimations_.rbegin(); it != estimations_.rend(); ++it) {
-            it->next = prev_id;
-            prev_id = save(*it);
-        }
+    auto mtype = measure_button_.value().type;
+    for (estimation& e : estimations_) {
+        e.active = false;
+        e.border = (mtype == measure_type::boolean ? e.temp_bool : e.temp_float);
+        e.weight = e.temp_weight;
+    }
 
-        errors_.clear();
+    estimations_.front().active = true;
+
+    // saving
+    for (auto it = estimations_.rbegin(); it != estimations_.rend(); ++it) {
+        it->next = prev_id;
+        prev_id = save(*it);
+    }
+
+    errors_.clear();
 }
 
 void estimation_window::render() {
@@ -84,7 +85,6 @@ void estimation_window::render() {
     for (auto it = estimations_.begin(); it != estimations_.end(); ++it) {
       
         ImGui::PushID(++counter);
-        //ImGui::PushID("remove");
 
         ImGui::Separator();
 
@@ -124,8 +124,6 @@ void estimation_window::render() {
             }
         }
         
-
-        //ImGui::PopID();
         ImGui::PopID();
     }
 
