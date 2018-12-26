@@ -158,6 +158,9 @@
     <ClCompile Include="ui\plan_window.cpp">
       <Filter>ui</Filter>
     </ClCompile>
+    <ClCompile Include="ui\helper\date_picker.cpp">
+      <Filter>ui\helper</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\opengl\glfw\egl_context.h">

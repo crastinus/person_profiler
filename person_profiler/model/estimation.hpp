@@ -29,7 +29,6 @@ struct estimation {
     day_type_id day_type{ 0 };
 
     // interface issues
-    bool temp_bool;
     float temp_float;
     float temp_weight;
 };

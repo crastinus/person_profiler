@@ -21,7 +21,7 @@ day_window::day_window(time_t timestamp, bool planning)
     //    planning_ = false;
     //}
 
-    blocked_ = (day_start(timestamp) < current_day_start()) && !planning_;
+    blocked_ = false;// (day_start(timestamp) < current_day_start()) && !planning_;
 
     day_ = req_day_by_ts(day_start(timestamp));
     if (day_.id == 0) {

@@ -25,7 +25,7 @@ int imgui_run(std::function<void(void*)> render)
 #if __APPLE__
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
-    GLFWwindow* window = glfwCreateWindow(1280, 720, "ImGui OpenGL3 example", NULL, NULL);
+    GLFWwindow* window = glfwCreateWindow(1280, 720, "Person profiler - OpenGL3", NULL, NULL);
     glfwMakeContextCurrent(window);
     glfwSwapInterval(1); // Enable vsync
     gl3wInit();
@@ -35,8 +35,25 @@ int imgui_run(std::function<void(void*)> render)
 
     // Load Fonts
     // (there is a default font, this is only if you want to change it. see extra_fonts/README.txt for more details)
-    //ImGuiIO& io = ImGui::GetIO();
+
+
+    ImFontConfig font_config;
+    font_config.OversampleH = 1; //or 2 is the same
+    font_config.OversampleV = 1;
+    font_config.PixelSnapH = 1;
+
+
+    static const ImWchar ranges[] =
+    {
+        0x0020, 0x00FF, // Basic Latin + Latin Supplement
+        0x0400, 0x044F, // Cyrillic
+        0,
+    };
+
+    ImGuiIO& io = ImGui::GetIO();
     //io.Fonts->AddFontDefault();
+    io.Fonts->AddFontFromFileTTF("C:\\Windows\\Fonts\\Tahoma.ttf", 14.0f, &font_config, ranges);
+
     //io.Fonts->AddFontFromFileTTF("../../extra_fonts/Cousine-Regular.ttf", 15.0f);
     //io.Fonts->AddFontFromFileTTF("../../extra_fonts/DroidSans.ttf", 16.0f);
     //io.Fonts->AddFontFromFileTTF("../../extra_fonts/ProggyClean.ttf", 13.0f);

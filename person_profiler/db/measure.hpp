@@ -24,4 +24,6 @@ void enable_measure_group_for_day(int day_id, int measure_group_id);
 
 measure_values_graph req_current_measure_graph(int day_type_id);
 measure_values_graph req_current_measure_graph_for_day(int day_id);
+measure_values_graph req_measure_graph_for(time_t first_day, time_t last_day);
+
 measure_graph req_measure_graph();

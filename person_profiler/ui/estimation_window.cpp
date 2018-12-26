@@ -22,6 +22,10 @@ void estimation_window::save_form() {
         auto estim = req_find_estimation(measure_button_.value().id, day_type_button_.value().id);
         estim.active = false;
         save(estim);
+
+        for (auto& e : estimations_) {
+            e.id = 0;
+        }
     }
 
     int prev_id = 0;
@@ -51,7 +55,7 @@ void estimation_window::save_form() {
     auto mtype = measure_button_.value().type;
     for (estimation& e : estimations_) {
         e.active = false;
-        e.border = (mtype == measure_type::boolean ? e.temp_bool : e.temp_float);
+        e.border = (mtype == measure_type::boolean ? 0 : e.temp_float);
         e.weight = e.temp_weight;
     }
 
@@ -77,7 +81,12 @@ void estimation_window::render() {
         return;
     }
 
-    ImGui::Checkbox("reverse", &reverse_);
+    if (ImGui::Checkbox("reverse", &reverse_)) {
+        for (auto& e : estimations_) {
+            e.reverse = reverse_;
+        }
+        emit_changes();
+    }
 
     int counter = 0;
 
@@ -91,9 +100,9 @@ void estimation_window::render() {
         ImGui::PushItemWidth(200);
         switch (m.type) {
         case measure_type::boolean: {
-            if (ImGui::Checkbox("border", &it->temp_bool)) {
-                emit_changes();
-            }
+            //if (ImGui::Checkbox("border", &it->temp_bool)) {
+            //    emit_changes();
+            //}
         } break;
         case measure_type::numeric: {
             if (ImGui::InputFloat("border", &it->temp_float, 0.0f, 0.0f, 2)) {

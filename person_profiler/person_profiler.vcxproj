@@ -140,6 +140,7 @@
     <ClCompile Include="ui\day_window.cpp" />
     <ClCompile Include="ui\day_type_window.cpp" />
     <ClCompile Include="ui\helper\combo_box_content.cpp" />
+    <ClCompile Include="ui\helper\date_picker.cpp" />
     <ClCompile Include="ui\helper\input.cpp" />
     <ClCompile Include="ui\estimation_window.cpp" />
     <ClCompile Include="ui\main_window.cpp" />

@@ -32,7 +32,6 @@ estimation req_estimation(int id) {
     result.next = stmt.getColumn(8);
     result.day_type = (int)stmt.getColumn(9);
 
-    result.temp_bool = (result.border != 0);
     result.temp_float = result.border;
     result.temp_weight = result.weight;    
 
@@ -66,7 +65,6 @@ estimation req_find_estimation(int measure_id, int day_type_id) {
     result.next = stmt.getColumn(8);
     result.day_type = (int)stmt.getColumn(9);
 
-    result.temp_bool = (result.border != 0);
     result.temp_float = result.border;
     result.temp_weight = result.weight;
 
@@ -173,7 +171,7 @@ measure_group req_measure_group(int id) {
     return result;
 }
 
-measure_values_graph req_current_measure_graph(std::string const& whereStmt) {
+static measure_values_graph req_measure_graph(std::string const& whereStmt) {
 
     char const* query =
         R"(SELECT mg.id  mg_id, mg.name  mg_name, mg.active mg_active,                           -- 3
@@ -238,11 +236,17 @@ measure_values_graph req_current_measure_graph(std::string const& whereStmt) {
 }
 
 measure_values_graph req_current_measure_graph(int day_type_id) {
-    return req_current_measure_graph(concat("WHERE e.active = 1 and e.day_type_id = ", day_type_id));
+    return req_measure_graph(concat("AND v.day_id = 0 WHERE e.active = 1 and e.day_type_id = ", day_type_id));
 }
 
 measure_values_graph req_current_measure_graph_for_day(int day_id) {
-    return req_current_measure_graph(concat("WHERE v.day_id = ", day_id));
+    return req_measure_graph(concat("WHERE v.day_id = ", day_id));
+}
+
+measure_values_graph req_measure_graph_for(time_t first_day, time_t last_day) {
+    std::string query_tail = concat("JOIN day d ON d.id = v.day_id ",
+                                    "WHERE d.day BETWEEN ", first_day, " AND ", last_day);
+    return req_measure_graph(query_tail);
 }
 
 measure_graph req_measure_graph() {

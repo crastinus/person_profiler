@@ -4,6 +4,9 @@
 #include <time.h>
 #include <imgui/imgui.h>
 #include <ui/ui.hpp>
+#include <functional>
+
+struct date_picker_button;
 
 struct date_picker : public window_inst {
 
@@ -34,184 +37,58 @@ struct date_picker : public window_inst {
     std::vector<int> days_;
     std::vector<int> years_;
 
+    date_picker_button* callback_;
+
     std::string date_;
 
-    date_picker(time_t time = time(nullptr)) 
-        : state_(state::days),
-        time_(time)
-    {
-        struct tm t;
-        gmtime_s(&t, &time_);
-        ryear = year = t.tm_year;
-        rmonth = month = t.tm_mon;
-        rday = day = t.tm_mday;
-
-        on_change_state();
-    }
+    date_picker(time_t time = time(nullptr), date_picker_button* callback = nullptr);
 
     char const* name() override {
         return "date picker";
     }
 
-    void render() override {
-        switch (state_) {
-        case state::days: render_days(); break;
-        case state::months: render_months(); break;
-        case state::years: render_years(); break;
-        }
-    }
+    void render() override;
 
-    void render_days() {
-        if (ImGui::Button(date_.c_str())) {
-            state_ = state::months;
-            on_change_state();
-            return;
-        }
+    void render_days();
 
-        int mon_idx = 0;
+    void render_months();
 
-        int wdth = 40;
+    void render_years();
 
-        // render header
-        for (char const* day : { "mon", "thu", "wed", "thrs", "fri", "sat", "sun" }) {
-            ImGui::Text(day);
-            if (mon_idx != 6) {
-                ImGui::SameLine(wdth*++mon_idx);
-            }
-        }
+    void on_change_state();
 
-        ImGui::Text("");
+    std::string render_date(char const* format);
 
-        constexpr int row = 7;
-        for (int i = 0; i < days_.size(); ++i) {
-            if (days_[i] == 0) {
-                continue;
-            }
+    void generate_days();
 
-            if (i % row != 0) {
-                ImGui::SameLine((i % row) * wdth);
-            }
+    void generate_years();
 
-            if (render_int(days_[i])) {
-                rday = days_[i];
-            }
+    bool render_int(int i);
 
-            
-        }
+    void on_date();
+ };
 
+struct date_picker_button {
 
-    }
+    date_picker_button(std::function<void(time_t)> func);
+    ~date_picker_button();
 
-    void render_months() {
-        if (ImGui::Button(date_.c_str())) {
-            state_ = state::years;
-            on_change_state();
-            return;
-        }
+    void render();
 
-        constexpr int row = 3;
-        for (int id = 0; id < sizeof(months)/sizeof(char const*); ++id) {
-            if (ImGui::Button(months[id])) {
-                state_ = state::days;
-                rmonth = id;
-                on_change_state();
-                break;
-            }
+    time_t time() const;
+    void set_time(time_t time);
+    
 
-            if ((id+1) % row != 0) {
-                ImGui::SameLine(120*((id+1)%row));
-            }
+private:
 
-        }        
-    }
+    void update(time_t time);
 
-    void render_years() {
-        constexpr int row = 3;
-        int row_id = 0;
-        for (int year : years_) {
-            
-            if (render_int(year + 1900)) {
-                ryear = year;
-                state_ = state::months;
-                on_change_state();
-                break;
-            }
+    time_t time_;
+    std::string output_string_;
+    std::function<void(time_t)> callback_;
 
-            if (++row_id % row != 0) {
-                ImGui::SameLine();
-            }
+    std::shared_ptr<date_picker> dp_;
 
-        }
-    }
-
-    void on_change_state() {
-        if (state_ == state::days) {
-            date_ = render_date("%Y.%m");
-            generate_days();
-        }  else if (state_ == state::years) {
-            generate_years();
-        } else if (state_ == state::months) {
-            date_ = render_date("%Y");
-        }
-    }
-
-    std::string render_date(char const* format) {
-        struct tm t {};
-
-        t.tm_mday = rday;
-        t.tm_mon = rmonth;
-        t.tm_year = ryear;
-
-        char buffer[128] = {};
-        strftime(buffer, sizeof(buffer), format, &t);
-
-        return buffer;
-    }
-
-    //void compute_shift() {
-    //    struct tm t {};
-    //    t.tm_mday = 1;
-    //    t.tm_mon = rmonth;
-    //    t.tm_year = ryear;
-    //    _mkgmtime(&t);
-    //    shift = t.tm_wday;
-    //}
-
-    void generate_days() {
-        
-        struct tm t {};
-        t.tm_mday = 1;
-        t.tm_mon = rmonth;
-        t.tm_year = ryear;
-
-        time_t start_ts = _mkgmtime(&t); 
-        
-        int shift = t.tm_wday;
-        t.tm_mon += 1;
-
-        time_t end_ts = _mkgmtime(&t);
-
-        days_.clear();
-        for (int i = 0; i < shift; ++i) {
-            days_.push_back(0);
-        }
-        for (int i = 0; i < (end_ts - start_ts) / 86400; ++i) {
-            days_.push_back(i+1);
-        }
-    }
-
-    void generate_years() {
-        years_.clear();
-        for (int i = ryear - 9; i < ryear + 10; ++i) {
-            years_.push_back(i);
-        }
-    }
-
-    bool render_int(int i) {
-        char buffer[20] = {};
-        sprintf(buffer, "%d", i);
-        return ImGui::Button(buffer);
-    }
-
+    friend struct date_picker;
 
 };
