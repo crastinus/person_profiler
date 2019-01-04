@@ -63,6 +63,9 @@ struct date_picker : public window_inst {
 
     void generate_years();
 
+    void render_prev();
+    void render_next();
+
     bool render_int(int i);
 
     void on_date();

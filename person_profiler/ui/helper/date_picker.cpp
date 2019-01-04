@@ -1,4 +1,5 @@
 #include "date_picker.hpp"
+#include <common/time.hpp>
 
 date_picker::date_picker(time_t time, date_picker_button * callback)
     : state_(state::days),
@@ -23,11 +24,16 @@ void date_picker::render() {
 }
 
  void date_picker::render_days() {
+     
+    render_prev();
+
     if (ImGui::Button(date_.c_str())) {
         state_ = state::months;
         on_change_state();
         return;
     }
+
+    render_next();
 
     int mon_idx = 0;
 
@@ -61,11 +67,16 @@ void date_picker::render() {
 }
 
  void date_picker::render_months() {
+
+     render_prev();
+
     if (ImGui::Button(date_.c_str())) {
         state_ = state::years;
         on_change_state();
         return;
     }
+
+    render_next();
 
     constexpr int row = 3;
     for (int id = 0; id < sizeof(months) / sizeof(char const*); ++id) {
@@ -157,6 +168,44 @@ void date_picker::render() {
         years_.push_back(i);
     }
 }
+
+ static std::tuple<int, int, int> parse_time(time_t time) {
+
+     struct tm t {};
+     ::gmtime_s(&t, &time);
+
+     return std::make_tuple(t.tm_mday, t.tm_mon, t.tm_year);
+ }
+
+ void date_picker::render_prev() {
+     if (ImGui::Button("<")) {
+
+         if (state_ == state::days) {
+             time_ = ::month(time_, -1);
+         }
+         else if (state_ == state::months) {
+             time_ = ::year(time_, -1);
+         }
+         std::tie(rday, rmonth, ryear) = parse_time(time_);
+         on_change_state();
+
+     }
+     ImGui::SameLine();
+}
+
+ void date_picker::render_next() {
+     ImGui::SameLine();
+     if (ImGui::Button(">")) {
+         if (state_ == state::days) {
+             time_ = ::month(time_, 1);
+         }
+         else if (state_ == state::months) {
+             time_ = ::year(time_, 1);
+         }
+         std::tie(rday, rmonth, ryear) = parse_time(time_);
+         on_change_state();
+     }
+ }
 
  bool date_picker::render_int(int i) {
     char buffer[20] = {};
