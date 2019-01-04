@@ -7,6 +7,7 @@ struct measure_group {
     int id = 0;
     std::string name;
     bool        active;
+    double      weight; // active weight for measures
 };
 
 struct measure_group_id {

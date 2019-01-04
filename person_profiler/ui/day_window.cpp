@@ -25,7 +25,7 @@ day_window::day_window(time_t timestamp, bool planning)
 
     day_ = req_day_by_ts(day_start(timestamp));
     if (day_.id == 0) {
-        save(day_);
+        day_.id = save(day_);
     }
     
     disabled_measure_groups_ = disabled_measure_groups(day_.id);
@@ -117,18 +117,19 @@ void day_window::render() {
             }
 
             for (value_info& vi : vec) {
-                ImGui::Text(vi.value_name_.c_str());
-                ImGui::SameLine();
+                //ImGui::Text(vi.value_name_.c_str());
+                //ImGui::SameLine();
                 ImGui::PushItemWidth(200);
+                ImGui::SetCursorPos({ 20, ImGui::GetCursorPos().y });
 
                 switch (vi.type_) {
                 case measure_type::boolean: {
-                    if (ImGui::Checkbox("value", &vi.bool_value_)) {
+                    if (ImGui::Checkbox(vi.value_name_.c_str(), &vi.bool_value_)) {
                         vi.value_.val = static_cast<double>(vi.bool_value_);
                     }
                 } break;
                 case measure_type::numeric: {
-                    if (ImGui::InputFloat("value", &vi.float_value_, 0.0f, 0.0f, 2)) {
+                    if (ImGui::InputFloat(vi.value_name_.c_str(), &vi.float_value_, 0.0f, 0.0f, 2)) {
                         vi.value_.val = static_cast<double>(vi.float_value_);
                     }
                 } break;
@@ -140,6 +141,7 @@ void day_window::render() {
     ImGui::Separator();
     if (ImGui::Button("Save")) {
 
+        // day must be save on choosing day type
         if (day_.id == 0) {
             throw std::runtime_error("day.id == 0");
         }
@@ -159,6 +161,7 @@ void day_window::after_render() {
 }
 
 void day_window::on_day_type(day_type new_day_type) {
+
     day_type_day dtd;
     dtd.day_id = day_.id;
     dtd.day_type_id = day_type_holder_.value().id;

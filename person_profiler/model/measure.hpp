@@ -12,6 +12,7 @@ struct measure {
     int id = 0;
     std::string name;
     bool active;
+    std::string comment;
     measure_type type;
     measure_group_id measure_group;
 };

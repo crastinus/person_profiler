@@ -152,6 +152,7 @@
   <ItemGroup>
     <ClInclude Include="common\common.hpp" />
     <ClInclude Include="common\concat.hpp" />
+    <ClInclude Include="common\osstream.hpp" />
     <ClInclude Include="common\size_for_output.hpp" />
     <ClInclude Include="common\string_streambuf.hpp" />
     <ClInclude Include="common\time.hpp" />

@@ -225,8 +225,8 @@ void date_picker::render() {
      }
  }
 
- date_picker_button::date_picker_button(std::function<void(time_t)> func)
-     : callback_(func) {
+ date_picker_button::date_picker_button(int id, std::function<void(time_t)> func)
+     :id_(id), callback_(func) {
  }
 
  date_picker_button::~date_picker_button() {
@@ -236,9 +236,11 @@ void date_picker::render() {
  }
 
  void date_picker_button::render()  {
+     ImGui::PushID(id_);
      if (ImGui::Button(output_string_.c_str())) {
          dp_ = window<date_picker>(time_, this);
      }
+     ImGui::PopID();
  }
 
  time_t date_picker_button::time() const {

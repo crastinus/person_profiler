@@ -107,7 +107,7 @@ void estimation_window::render() {
         case measure_type::numeric: {
             if (ImGui::InputFloat("border", &it->temp_float, 0.0f, 0.0f, 2)) {
                 if (it->temp_float < 0) {
-                    it->temp_float = it->border;
+                    it->temp_float = static_cast<float>(it->border);
                 }
                 else {
                     emit_changes();
@@ -126,7 +126,7 @@ void estimation_window::render() {
         ImGui::SameLine();
         if (ImGui::InputFloat("weight", &it->temp_weight, 0.0f, 0.0f, 2)) {
             if (it->temp_weight < 0) {
-                it->temp_weight = it->weight;
+                it->temp_weight = static_cast<float>(it->weight);
             }
             else {
                 emit_changes();
@@ -143,7 +143,7 @@ void estimation_window::render() {
         estimation val(estimations_.back());
         val.id = 0;
         val.border = val.border + (val.reverse ? -1 : 1);
-        val.temp_float = val.border;
+        val.temp_float = static_cast<float>(val.border);
         val.measure = measure_button_.value().id;
         val.day_type = day_type_button_.value().id;
         estimations_.push_back(val);

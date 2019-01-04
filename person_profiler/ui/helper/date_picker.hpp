@@ -73,7 +73,7 @@ struct date_picker : public window_inst {
 
 struct date_picker_button {
 
-    date_picker_button(std::function<void(time_t)> func);
+    date_picker_button(int id, std::function<void(time_t)> func);
     ~date_picker_button();
 
     void render();
@@ -86,6 +86,7 @@ private:
 
     void update(time_t time);
 
+    int id_;
     time_t time_;
     std::string output_string_;
     std::function<void(time_t)> callback_;

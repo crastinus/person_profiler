@@ -34,7 +34,7 @@ void main_window::render() {
 
 
     if (ImGui::Button("day_picker")) {
-        window<date_picker>();
+        window<date_picker>(0);
     }
 
     // ethernal window

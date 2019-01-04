@@ -30,42 +30,22 @@ void measure_window::render() {
 
             ImGui::PushID(m.id);
 
-            if (ImGui::Button(m.name.c_str()) && callback_ != nullptr) {
-                callback_->update(m);
+            if (ImGui::Button(m.name.c_str())) {
+                if (callback_ != nullptr) {
+                    callback_->update(m);
+                }
+                else {
+                    window<measure_edit_window>(m);
+                }
             }
-
-            bool is_bool = (m.type == measure_type::boolean);
-            bool is_numeric = (m.type == measure_type::numeric);
-
-            ImGui::SameLine();
-
-            if (ImGui::Checkbox("IsBool", &is_bool)) {
-                m.type = (is_bool ? measure_type::boolean : measure_type::numeric);
-                save(m);
-            }
-
-            ImGui::SameLine();
-
-            if (ImGui::Checkbox("IsNumeric", &is_numeric)) {
-                m.type = (is_bool ? measure_type::numeric : measure_type::boolean);
-                save(m);
-            }
-
-            ImGui::SameLine();
-
-
-            if (ImGui::Checkbox("Active", &m.active)) {
-                save(m);
-            }
-
 
             ImGui::PopID();
         }
 
 
         if (ImGui::Button("Add")) {
-            window<input_window>("measure", [this, mg_id](std::string const& str) {
-                on_new_measure(str, mg_id);
+            window<measure_edit_window>(mg_id.id, vec, [this, mg_id](measure m) {
+                graph_.at(mg_id).push_back(m);
             });
         }
         
@@ -82,26 +62,26 @@ void measure_window::render() {
     }
 }
 
-void measure_window::on_new_measure(std::string const& measure_name, measure_group_id mg_id) {
-    if (graph_.find( mg_id) == graph_.end()) {
-        return;
-    }
-
-    for (auto& m : graph_.at(mg_id)) {
-        if (m.name == measure_name) {
-            return;
-        }
-    }
-
-    measure new_m;
-    new_m.active = true;
-    new_m.measure_group = mg_id;
-    new_m.name = measure_name;
-    new_m.type = measure_type::boolean;
-    new_m.id =  save(new_m);
-
-    graph_.at(mg_id).push_back(new_m);
-}
+//void measure_window::on_new_measure(std::string const& measure_name, measure_group_id mg_id) {
+//    if (graph_.find( mg_id) == graph_.end()) {
+//        return;
+//    }
+//
+//    for (auto& m : graph_.at(mg_id)) {
+//        if (m.name == measure_name) {
+//            return;
+//        }
+//    }
+//
+//    measure new_m;
+//    new_m.active = true;
+//    new_m.measure_group = mg_id;
+//    new_m.name = measure_name;
+//    new_m.type = measure_type::boolean;
+//    new_m.id =  save(new_m);
+//
+//    graph_.at(mg_id).push_back(new_m);
+//}
 
 void measure_window::on_new_measure_group(std::string const& measure_group_name) {
 
@@ -171,3 +151,72 @@ void measure_button::update(measure m) {
 
 }
 
+measure_edit_window::measure_edit_window(measure m) 
+    : measure_(m), name_(measure_.name, "Name"), 
+    comment_(measure_.comment, "Comment")  {
+    have_dependencies_ = false; // (measure_.id != 0 && have_dependencies(measure_));
+}
+
+measure_edit_window::measure_edit_window(int measure_group_id, std::vector<measure> measures_in_group, std::function<void(measure)> callback)
+    : measure_edit_window(measure{})
+{
+    measure_.type = measure_type::boolean;
+    measure_.measure_group = measure_group_id;
+    measure_.active = true;
+    measures_in_group_ = measures_in_group;
+    callback_ = callback;
+}
+
+void measure_edit_window::render() {
+    if (!have_dependencies_) {
+        bool is_bool = (measure_.type == measure_type::boolean);
+        bool is_numeric = (measure_.type == measure_type::numeric);
+
+        if (ImGui::Checkbox("IsBool", &is_bool)) {
+            measure_.type = (is_bool ? measure_type::boolean : measure_type::numeric);
+        }
+
+        ImGui::SameLine();
+
+        if (ImGui::Checkbox("IsNumeric", &is_numeric)) {
+            measure_.type = (is_bool ? measure_type::numeric : measure_type::boolean);
+        }
+
+        name_.render_input();
+        
+    }
+    else {
+        ImGui::Text(measure_.type == measure_type::boolean ? "boolean" : "numeric"); ImGui::SameLine();
+        ImGui::Text(measure_.name.c_str());
+    }
+
+    comment_.render_multiline();
+
+    if (ImGui::Checkbox("Active", &measure_.active)) {
+    }
+
+    if (ImGui::Button("Save")) {
+        save();
+    }
+
+}
+
+void measure_edit_window::save() {
+
+    if (measure_.name.empty()) {
+        throw std::runtime_error("Name is empty");
+    }
+
+    for (auto& m : measures_in_group_) {
+        if (m.name == measure_.name) {
+            throw std::runtime_error("Measure with this name allready exits");
+        }
+    }
+
+    measure_.id = ::save(measure_);
+    if (callback_) {
+        callback_(measure_);
+    }
+
+    errors_.clear();
+}

@@ -16,3 +16,6 @@ struct value_info {
 // For making proper sugar functions
 struct measure_values_graph : public std::unordered_map<measure_group_id, std::vector<value_info>, measure_group_id_hash> {};
 struct measure_graph : public std::unordered_map<measure_group_id, std::vector<measure>, measure_group_id_hash> {};
+
+template<typename T>
+using mg_graph = std::unordered_map<measure_group_id, T, measure_group_id_hash>;
