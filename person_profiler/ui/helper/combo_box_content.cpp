@@ -63,6 +63,10 @@ bool combo_box_content::add(std::string const & new_value) {
     return true;
 }
 
+bool combo_box_content::empty() const {
+    return source_.empty();
+}
+
 void combo_box_content::create_content() {
     content_.clear();
     for (std::string const& sym : source_) {
@@ -70,8 +74,4 @@ void combo_box_content::create_content() {
         content_ += '\0';
     }
     content_ += '\0';
-}
-
-bool combo_box_content::empty() {
-    return content_.empty();
 }
