@@ -5,7 +5,8 @@ char const* ddl = R"(
 CREATE TABLE measure_group (
     id integer PRIMARY KEY AUTOINCREMENT,  
     name  text NOT NULL,
-    active integer NOT NULL
+    active integer NOT NULL,
+    weight float NOT NULL -- weight for completion this measure group
 );
 
 CREATE TABLE measure (
@@ -14,6 +15,7 @@ CREATE TABLE measure (
  active int NOT NULL DEFAULT 1,
  type integer NOT NULL, 
  measure_group_id integer NOT NULL,
+ comment text NOT NULL,
  FOREIGN KEY (measure_group_id) REFERENCES measure_group(id)
 );
 

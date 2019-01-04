@@ -3,6 +3,7 @@
 #include "cache.hpp"
 #include "measure.hpp"
 
+
 int save(value const& v) {
     if (v.id == 0) {
         SQLite::Statement value_insert(db(), "INSERT INTO value(value, day_id, estimation_id) VALUES (:value, :day_id, :estimation_id)");
@@ -32,7 +33,7 @@ int save(day const& d) {
     if (d.id == 0) {
         SQLite::Statement day_insert(db(), "INSERT INTO day(day, comment) VALUES(:date, :comment)");
         day_insert.bind(":date", d.day_timestamp);
-        day_insert.bind(":comment", d.comment);
+        day_insert.bind(":comment", d.comment.c_str());
         day_insert.exec();
 
         SQLite::Statement get_max_day_id(db(), "SELECT max(id) from day");
@@ -44,7 +45,7 @@ int save(day const& d) {
 
     SQLite::Statement day_upd(db(), "UPDATE day SET comment = :comment WHERE id = :id");
     day_upd.bind(":id", d.id);
-    day_upd.bind(":comment", d.comment);
+    day_upd.bind(":comment", d.comment.c_str());
     day_upd.exec();
 
     // nothing can change
@@ -55,7 +56,7 @@ int save(day_type const & d) {
 
     if (d.id == 0) {
         SQLite::Statement day_insert(db(), "INSERT INTO day_type(name, active) VALUES(:name, :active)");
-        day_insert.bind(":name", d.name);
+        day_insert.bind(":name", d.name.c_str());
         day_insert.bind(":active", d.active);
         day_insert.exec();
 
@@ -68,7 +69,7 @@ int save(day_type const & d) {
 
     SQLite::Statement day_upd(db(), "UPDATE day_type SET name = :name, active=:active WHERE id = :id");
     day_upd.bind(":id", d.id);
-    day_upd.bind(":name", d.name);
+    day_upd.bind(":name", d.name.c_str());
     day_upd.bind(":active", d.active);
     day_upd.exec();
 
@@ -132,10 +133,11 @@ int save(estimation const& e) {
 int save(measure const& m) {
 
     if (m.id == 0) {
-        SQLite::Statement meas_insrt(db(), "INSERT INTO measure(name, type, measure_group_id) VALUES(:name, :type, :measure_group_id)");
-        meas_insrt.bind(":name", m.name);
+        SQLite::Statement meas_insrt(db(), "INSERT INTO measure(name, type, measure_group_id,  comment) VALUES(:name, :type, :measure_group_id, :comment)");
+        meas_insrt.bind(":name", m.name.c_str());
         meas_insrt.bind(":type", static_cast<int>(m.type));
         meas_insrt.bind(":measure_group_id", m.measure_group.id);
+        meas_insrt.bind(":comment", m.comment.c_str());
         meas_insrt.exec();
 
         SQLite::Statement get_max_id(db(), "SELECT max(id) from measure");
@@ -159,9 +161,9 @@ int save(measure const& m) {
     }
 
     // disabled type update
-    SQLite::Statement meas_updt(db(), "UPDATE measure SET name = :name, type = :type WHERE id = :id");
-    meas_updt.bind(":name", m.name);
-    meas_updt.bind(":type", static_cast<int>(m.type));
+    SQLite::Statement meas_updt(db(), "UPDATE measure SET name = :name, comment = :comment WHERE id = :id");
+    meas_updt.bind(":name", m.name.c_str());
+    meas_updt.bind(":comment", m.comment.c_str());
     meas_updt.bind(":id", m.id);
     meas_updt.exec();
 
@@ -173,9 +175,10 @@ int save(measure const& m) {
 int save(measure_group const & mg) {
 
     if (mg.id == 0) {
-        SQLite::Statement insert(db(), "INSERT INTO measure_group(name, active) VALUES(:name, :active)");
-        insert.bind(":name", mg. name);
+        SQLite::Statement insert(db(), "INSERT INTO measure_group(name, weight, active) VALUES(:name,:weight, :active)");
+        insert.bind(":name", mg.name.c_str());
         insert.bind(":active", mg.active);
+        insert.bind(":weight", mg.weight);
         insert.exec();
 
         SQLite::Statement get_max_id(db(), "SELECT max(id) from measure_group");
@@ -185,9 +188,10 @@ int save(measure_group const & mg) {
 
     cache().del(mg);
 
-    SQLite::Statement update(db(), "UPDATE measure_group SET name = :name, active = :active WHERE id = :id");
+    SQLite::Statement update(db(), "UPDATE measure_group SET name = :name, active = :active, weight = :weight WHERE id = :id");
     update.bind(":id", mg.id);
-    update.bind(":name", mg.name);
+    update.bind(":name", mg.name.c_str());
+    update.bind(":weight", mg.weight);
     update.bind(":active", mg.active);
     update.exec();
 

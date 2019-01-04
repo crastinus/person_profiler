@@ -32,8 +32,8 @@ estimation req_estimation(int id) {
     result.next = stmt.getColumn(8);
     result.day_type = (int)stmt.getColumn(9);
 
-    result.temp_float = result.border;
-    result.temp_weight = result.weight;    
+    result.temp_float = static_cast<float>(result.border);
+    result.temp_weight = static_cast<float>(result.weight);
 
     return result;
 
@@ -65,8 +65,8 @@ estimation req_find_estimation(int measure_id, int day_type_id) {
     result.next = stmt.getColumn(8);
     result.day_type = (int)stmt.getColumn(9);
 
-    result.temp_float = result.border;
-    result.temp_weight = result.weight;
+    result.temp_float = static_cast<float>(result.border);
+    result.temp_weight = static_cast<float>(result.weight);
 
     return result;
 }
@@ -140,7 +140,7 @@ void enable_measure_group_for_day(int day_id, int measure_group_id) {
 measure req_measure(int id) {
     measure result;
 
-    SQLite::Statement stmt(db(), "SELECT id, name, type, measure_group_id, active FROM measure WHERE id = :id");
+    SQLite::Statement stmt(db(), "SELECT id, name, type, measure_group_id, active, comment FROM measure WHERE id = :id");
     stmt.bind(":id", id);
     if (!stmt.executeStep()) {
         throw std::runtime_error("Measure with id " + std::to_string(id) + " doesn't exists");
@@ -151,6 +151,7 @@ measure req_measure(int id) {
     result.type = static_cast<measure_type>((int)stmt.getColumn(2));
     result.measure_group = stmt.getColumn(3);
     result.active = static_cast<int>(stmt.getColumn(4));
+    result.comment = stmt.getColumn(5).getString();
 
     return result;
 }
@@ -158,7 +159,7 @@ measure req_measure(int id) {
 measure_group req_measure_group(int id) {
     measure_group result;
 
-    SQLite::Statement stmt(db(), "SELECT id, name, active  FROM measure_group WHERE id = :id");
+    SQLite::Statement stmt(db(), "SELECT id, name, active, weight  FROM measure_group WHERE id = :id");
     stmt.bind(":id", id);
     if (!stmt.executeStep()) {
         throw std::runtime_error("Measure with id " + std::to_string(id) + " doesn't exists");
@@ -167,6 +168,7 @@ measure_group req_measure_group(int id) {
     result.id = stmt.getColumn(0);
     result.name = stmt.getColumn(1).getString();
     result.active = (int)stmt.getColumn(2);
+    result.weight = stmt.getColumn(3);
 
     return result;
 }
@@ -174,8 +176,8 @@ measure_group req_measure_group(int id) {
 static measure_values_graph req_measure_graph(std::string const& whereStmt) {
 
     char const* query =
-        R"(SELECT mg.id  mg_id, mg.name  mg_name, mg.active mg_active,                           -- 3
-       m.id  m_id, m.name  m_name, m.type  m_type, m.active m_active,                             -- 4
+        R"(SELECT mg.id  mg_id, mg.name  mg_name, mg.active mg_active, mg.weight mg_weight,       -- 4
+       m.id  m_id, m.name  m_name, m.type  m_type, m.active m_active, m.comment m_comment,        -- 6
 	   e.id  e_id, e.started e_st, e.expired e_exp, e.weight e_weight, e.border e_bord,
 	   e.reverse e_rev, e.next e_nxt,                                                            -- 7
 	   v.id v_id, v.value v_val, v.day_id v_d_id                                                 -- 3 
@@ -190,26 +192,31 @@ static measure_values_graph req_measure_graph(std::string const& whereStmt) {
 
     while (stmt.executeStep()) {
         measure_group mg;
-        mg.id = stmt.getColumn(0);
-        mg.name = stmt.getColumn(1).getString();
-        mg.active = static_cast<int>(stmt.getColumn(2));
+
+        int col_id = 0;
+
+        mg.id = stmt.getColumn(col_id++);
+        mg.name = stmt.getColumn(col_id++).getString();
+        mg.active = static_cast<int>(stmt.getColumn(col_id++));
+        mg.weight = stmt.getColumn(col_id++);
 
         measure m;
-        m.id = stmt.getColumn(3);
-        m.name = stmt.getColumn(4).getString();
-        m.type = static_cast<measure_type>((int)stmt.getColumn(5));
-        m.active = static_cast<int>(stmt.getColumn(6));
+        m.id = stmt.getColumn(col_id++);
+        m.name = stmt.getColumn(col_id++).getString();
+        m.type = static_cast<measure_type>((int)stmt.getColumn(col_id++));
+        m.active = static_cast<int>(stmt.getColumn(col_id++));
+        m.comment = stmt.getColumn(col_id++).getString();
         m.measure_group = mg.id;
 
         estimation e;
-        e.id = stmt.getColumn(7);
-        e.started = stmt.getColumn(8);
-        e.expired = stmt.getColumn(9);
-        e.weight = stmt.getColumn(10);
-        e.border = stmt.getColumn(11);
-        e.reverse = (int)stmt.getColumn(12);
+        e.id = stmt.getColumn(col_id++);
+        e.started = stmt.getColumn(col_id++);
+        e.expired = stmt.getColumn(col_id++);
+        e.weight = stmt.getColumn(col_id++);
+        e.border = stmt.getColumn(col_id++);
+        e.reverse = (int)stmt.getColumn(col_id++);
         e.measure = m.id;
-        e.next = stmt.getColumn(13);
+        e.next = stmt.getColumn(col_id++);
 
         cache().save(mg);
         cache().save(m);
@@ -217,9 +224,9 @@ static measure_values_graph req_measure_graph(std::string const& whereStmt) {
 
 
         value v;
-        v.id = stmt.getColumn(14);
-        v.val = stmt.getColumn(15);
-        v.day = stmt.getColumn(16);
+        v.id = stmt.getColumn(col_id++);
+        v.val = stmt.getColumn(col_id++);
+        v.day = stmt.getColumn(col_id++);
         v.estimation = e.id;
 
         // real time rendering value
@@ -253,9 +260,10 @@ measure_graph req_measure_graph() {
 
     char const* query = 
     R"(SELECT mg.id  mg_id, mg.name  mg_name, mg.active mg_active,                               -- 3
-       m.id  m_id, m.name  m_name, m.type  m_type, m.active m_active                             -- 4
-       FROM measure m
-       JOIN measure_group mg on m.measure_group_id = mg.id;)";
+       m.id  m_id, m.name  m_name, m.type  m_type, m.active m_active, m.comment m_comm           -- 5
+       FROM measure_group mg 
+       LEFT JOIN measure m on m.measure_group_id = mg.id
+       WHERE mg.active = 1)";
 
 
     measure_graph result;
@@ -268,14 +276,23 @@ measure_graph req_measure_graph() {
         mg.name = stmt.getColumn(1).getString();
         mg.active = static_cast<int>(stmt.getColumn(2));
 
+        cache().save(mg);
+
+        int m_id = stmt.getColumn(3);
+        if (m_id == 0) {
+            result[{mg.id}] = {};
+            continue;
+        }
+
         measure m;
-        m.id = stmt.getColumn(3);
+        m.id = m_id;
         m.name = stmt.getColumn(4).getString();
         m.type = static_cast<measure_type>((int)stmt.getColumn(5));
         m.active = static_cast<int>(stmt.getColumn(6));
+        m.comment = stmt.getColumn(7).getString();
         m.measure_group = mg.id;
 
-        cache().save(mg);
+
         cache().save(m);
         
         result[m.measure_group].push_back(m);
