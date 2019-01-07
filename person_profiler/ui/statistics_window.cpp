@@ -224,7 +224,7 @@ void statistics_window::on_update_time(bool start_time, time_t time) {
 
     // clean old allowed measure groups
     for (auto mg_it = allowed_measure_groups_.begin(); mg_it != allowed_measure_groups_.end(); ) {
-        if (measure_group_names_.find(*mg_it) == measure_group_names_.end()) {
+        if (!measure_group_names_.empty() && measure_group_names_.find(*mg_it) == measure_group_names_.end()) {
             mg_it = allowed_measure_groups_.erase(mg_it);
             continue;
         }
