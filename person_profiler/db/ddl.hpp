@@ -50,6 +50,10 @@ CREATE TABLE forbidden_measure_group (
     FOREIGN KEY (measure_group_id) REFERENCES measure_group(id)
 );
 
+CREATE TABLE options (
+    name varchar(128) PRIMARY KEY,
+	value text NOT NULL
+);
 
 CREATE TABLE estimation
 (
