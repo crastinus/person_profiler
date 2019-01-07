@@ -10,7 +10,7 @@
 struct day_group_stat {
     std::vector<value> values_;
     std::string legend_;
-    double result_estimation_; // result estimation of current day
+    float result_estimation_; // result estimation of current day
 };
 
 struct statistics_window : public window_inst {

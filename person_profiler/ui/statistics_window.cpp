@@ -43,10 +43,11 @@ void statistics_window::render() {
 
     auto start_x = ImGui::GetCursorScreenPos().x;
 
-    size_t alignment = 0;
+    float alignment = 0;
     size_t counter = 0;
 
     for (auto&[mg_id, vals] : result_info_) {
+        (void)vals;
         
         // check measure groups for showing
         bool show = (allowed_measure_groups_.count(mg_id.id) > 0);
@@ -75,16 +76,16 @@ void statistics_window::render() {
         return;
     }
 
-    std::unordered_map<int, size_t> meas_id_to_pos;
+    std::unordered_map<int, float> meas_id_to_pos;
     
     counter = 0;
 
     ImGui::SetCursorPosX(50);
     for (int meas_id : allowed_measure_groups_) {
 
-        size_t start_pos = ImGui::GetCursorPos().x;
+        float start_pos = ImGui::GetCursorPos().x;
         ImGui::Text(measure_group_names_.at(meas_id).c_str());
-        size_t end_pos = ImGui::GetItemRectMax().x - ImGui::GetCursorScreenPos().x;
+        float end_pos = ImGui::GetItemRectMax().x - ImGui::GetCursorScreenPos().x;
 
         meas_id_to_pos[meas_id] = (end_pos + start_pos) / 2;
         if (counter++ != allowed_measure_groups_.size()-1) {
@@ -208,7 +209,7 @@ void statistics_window::on_update_time(bool start_time, time_t time) {
             }
             os << ")\n/" << max_weight << " = " << (result_weight / max_weight);
 
-            stat.result_estimation_ = result_weight / max_weight;
+            stat.result_estimation_ = static_cast<float>(result_weight / max_weight);
             stat.values_ = std::move(vals);
         }
     }
