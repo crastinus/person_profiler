@@ -6,7 +6,7 @@
 template<typename ResultType, typename SourceType>
 inline ResultType numeric_cast(SourceType&& src) {
 
-    if (std::is_same<ResultType, SourceType>::value) {
+    if constexpr (std::is_same<ResultType, SourceType>::value) {
         return src;
     }
 
