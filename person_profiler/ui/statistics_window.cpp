@@ -223,19 +223,25 @@ void statistics_window::on_update_time(bool start_time, time_t time) {
         return lhs.day_timestamp < rhs.day_timestamp;
     });
 
+    save_showed_measures();
+}
+
+void statistics_window::save_showed_measures() {
+
+    // disable wrong measures removing
+    if (measure_group_names_.empty()) {
+        return;
+    }
+
     // clean old allowed measure groups
     for (auto mg_it = allowed_measure_groups_.begin(); mg_it != allowed_measure_groups_.end(); ) {
-        if (!measure_group_names_.empty() && measure_group_names_.find(*mg_it) == measure_group_names_.end()) {
+        if (measure_group_names_.find(*mg_it) == measure_group_names_.end()) {
             mg_it = allowed_measure_groups_.erase(mg_it);
             continue;
         }
         ++mg_it;
     }
 
-    save_showed_measures();
-}
-
-void statistics_window::save_showed_measures() {
     save_option("statistics_measure_group_ids", join_through(allowed_measure_groups_, ","));
 }
 
