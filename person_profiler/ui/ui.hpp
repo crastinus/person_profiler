@@ -13,7 +13,11 @@ struct window_inst {
     virtual void render() = 0;
     virtual void after_render() {}
     virtual void before_render() {}
-    virtual ImVec2 initial_size() {
+    virtual ImVec2 initial_size() const {
+        return ImVec2(0, 0);
+    }
+
+    virtual ImVec2 initial_pos() const {
         return ImVec2(0, 0);
     }
 

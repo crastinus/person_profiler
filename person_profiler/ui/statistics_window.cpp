@@ -2,9 +2,12 @@
 #include <db/cache.hpp>
 #include <db/measure.hpp>
 #include <db/model.hpp>
+#include <db/options.hpp>
 #include <model/measure_graph.hpp>
 #include <common/osstream.hpp>
 #include <common/time.hpp>
+#include <common/split.hpp>
+#include <common/join_through.hpp>
 
 
 // proper accumulate
@@ -23,53 +26,97 @@ inline auto accumulate(ContainerType const& cont, FunctorType&& f) {
 
 statistics_window::statistics_window()
     :start_(0,[this](time_t t) {this->on_update_time(true,t); }),
-    end_(1, [this](time_t t) {this->on_update_time(false,t); }),
-    measure_groups_({})
+    end_(1, [this](time_t t) {this->on_update_time(false,t); })    
 {
     start_.set_time(time(nullptr));
     end_.set_time(time(nullptr));
+    restore_showed_measures();
 }
 
 void statistics_window::render() {
+
+    constexpr size_t interval = 150;
+
     start_.render();
     ImGui::SameLine();
     end_.render();
 
-    if (!measure_groups_.empty() && ImGui::Combo("measure group", &measure_groups_.idx(), measure_groups_.content())) {
-        for (auto&[mg_id, _] : result_info_) {
-            (void)_;
-            measure_group mg = mg_id;
-            if (mg.name == measure_groups_.current_element()) {
-                current_mg_id_ = mg_id.id;
-                break;
+    auto start_x = ImGui::GetCursorScreenPos().x;
+
+    size_t alignment = 0;
+    size_t counter = 0;
+
+    for (auto&[mg_id, vals] : result_info_) {
+        
+        // check measure groups for showing
+        bool show = (allowed_measure_groups_.count(mg_id.id) > 0);
+        if (ImGui::Checkbox(measure_group_names_[mg_id.id].c_str(), &show)) {
+            if (show) {
+                allowed_measure_groups_.insert(mg_id.id);
             }
+            else {
+                allowed_measure_groups_.erase(mg_id.id);
+            }
+            save_showed_measures();
+        }
+
+        auto end_x = ImGui::GetItemRectMax().x;
+
+        alignment += interval;
+        if (++counter == result_info_.size() || alignment < end_x - start_x || alignment > interval*2  ) {
+            alignment = 0;
+        }
+        else {
+            ImGui::SameLine(alignment);
         }
     }
 
-    if (current_mg_id_ == 0) {
+    if (measure_group_names_.empty()) {
         return;
     }
 
-    auto& vals = result_info_.at({ current_mg_id_ });
-    for (auto& si : vals) {
-        
-        ImGui::PushID(si.day_.id);
+    std::unordered_map<int, size_t> meas_id_to_pos;
+    
+    counter = 0;
 
-        ImGui::Text(si.day_text_.c_str());
-        ImGui::SameLine();
+    ImGui::SetCursorPosX(50);
+    for (int meas_id : allowed_measure_groups_) {
 
-        ImGui::ColorButton("###resultinfo", ImVec4(1 - si.result_estimation_, si.result_estimation_, 0, 0));
-        if (ImGui::BeginPopupContextItem("Legend item")) {
-            ImGui::Text(si.legend_.c_str());
-            ImGui::EndPopup();
+        size_t start_pos = ImGui::GetCursorPos().x;
+        ImGui::Text(measure_group_names_.at(meas_id).c_str());
+        size_t end_pos = ImGui::GetItemRectMax().x - ImGui::GetCursorScreenPos().x;
+
+        meas_id_to_pos[meas_id] = (end_pos + start_pos) / 2;
+        if (counter++ != allowed_measure_groups_.size()-1) {
+            ImGui::SameLine(end_pos + 30);
         }
-
-        ImGui::PopID();
-        //ImGui::Text(std::to_string(si.result_estimation_).c_str());
-        //ImGui::SameLine();
-        //ImGui::Text(si.legend_.c_str());
+        
     }
+    
+    for (day const& d : days_) {
+        ImGui::PushID(d.id);
+        ImGui::Text(format("%m.%d", d.day_timestamp).c_str());
+        
+        for (int meas_id : allowed_measure_groups_) {
 
+            ImGui::PushID(meas_id);
+            
+            auto& dict = result_info_.at({ meas_id });
+            if (dict.find(d.id) != dict.end()) {
+
+                ImGui::SameLine(meas_id_to_pos.at(meas_id));
+
+                auto& si = dict.at(d.id);
+                ImGui::ColorButton("###resultinfo", ImVec4(1 - si.result_estimation_, si.result_estimation_, 0, 0));
+                if (ImGui::BeginPopupContextItem("Legend item")) {
+                    ImGui::Text(si.legend_.c_str());
+                    ImGui::EndPopup();
+                }         
+            }
+             ImGui::PopID();
+        }
+        ImGui::PopID();
+    }
 }
 
 void statistics_window::on_update_time(bool start_time, time_t time) {
@@ -89,28 +136,30 @@ void statistics_window::on_update_time(bool start_time, time_t time) {
     }
 
     graph_ = req_measure_graph_for(start, end);
-    measure_groups_.assign(graph_.begin(), graph_.end(), [](auto& p) {
-        return ((measure_group)p.first).name;
-    });
 
     current_mg_id_ = 0;
+
+    std::unordered_set<int> day_ids;
 
     result_info_.clear();
     for (auto&[mg_id, vec] : graph_) {
 
+        measure_group_names_[mg_id.id] = get_model<measure_group>(mg_id.id).name;
+
         std::unordered_map<int, std::vector<value>> day_to_meas;
+
         for (auto& value : vec) {
             day_to_meas[value.value_.day.id].push_back(value.value_);
+            day_ids.insert(value.value_.day.id);
         }
-
+        
         for (auto&[day_id, vals] : day_to_meas) {
-            day_group_stat& stat = result_info_[mg_id].emplace_back();
+            day_group_stat& stat = result_info_[mg_id][day_id];
 
             auto max_weight = accumulate(vals, [](value const& v) {
                 return cache().get<estimation>(v.estimation.id)->weight;
             });
 
-            stat.day_ = get_model<day>(day_id);
             stat.result_estimation_ = 0;
 
             osstream os(stat.legend_);
@@ -120,6 +169,8 @@ void statistics_window::on_update_time(bool start_time, time_t time) {
             double result_weight = 0.0;
 
             size_t count = vals.size();
+
+            // legend and data for every day of every estimation
 
             os << "(";
             for (auto& val : vals) {
@@ -159,13 +210,40 @@ void statistics_window::on_update_time(bool start_time, time_t time) {
 
             stat.result_estimation_ = result_weight / max_weight;
             stat.values_ = std::move(vals);
-            stat.day_text_ = format("%m.%d", stat.day_.day_timestamp);
         }
-
-        // sort by day date
-        auto& stats = result_info_[mg_id];
-        std::sort(stats.begin(), stats.end(), [](day_group_stat const& lhs, day_group_stat const& rhs) {
-                return lhs.day_.day_timestamp < rhs.day_.day_timestamp;
-        });   
     }
+
+    // fill days
+    for (auto id : day_ids) {
+        days_.push_back(get_model<day>(id));
+    }
+
+    std::sort(days_.begin(), days_.end(), [](day const& lhs, day const& rhs) {
+        return lhs.day_timestamp < rhs.day_timestamp;
+    });
+
+    // clean old allowed measure groups
+    for (auto mg_it = allowed_measure_groups_.begin(); mg_it != allowed_measure_groups_.end(); ) {
+        if (measure_group_names_.find(*mg_it) == measure_group_names_.end()) {
+            mg_it = allowed_measure_groups_.erase(mg_it);
+            continue;
+        }
+        ++mg_it;
+    }
+
+    save_showed_measures();
+}
+
+void statistics_window::save_showed_measures() {
+    save_option("statistics_measure_group_ids", join_through(allowed_measure_groups_, ","));
+}
+
+void statistics_window::restore_showed_measures() {
+    std::string mg_ids_str = get_option("statistics_measure_group_ids");
+
+    allowed_measure_groups_.clear();
+    for (int mg_id : split_to<int>(mg_ids_str,",")) {
+        allowed_measure_groups_.insert(mg_id);
+    }
+
 }

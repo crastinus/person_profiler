@@ -8,7 +8,7 @@
 #include "plan_window.hpp"
 #include "statistics_window.hpp"
 #include "helper/date_picker.hpp"
-
+#include <common/concat.hpp>
 
 void main_window::render() {
 

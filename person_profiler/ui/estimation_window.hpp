@@ -14,7 +14,7 @@ struct estimation_window : public window_inst {
     // estimation but and measure
     virtual char const* name() override { return "estimation"; }
     virtual void render() override;
-    virtual ImVec2 initial_size() override { return ImVec2(270, 270); }
+    virtual ImVec2 initial_size() const override { return ImVec2(270, 270); }
     virtual void before_render() override;
     
 private:

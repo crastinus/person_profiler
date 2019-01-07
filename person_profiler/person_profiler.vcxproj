@@ -95,12 +95,16 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="common\common.cpp" />
+    <ClCompile Include="common\split.cpp" />
     <ClCompile Include="common\string_streambuf.cpp" />
+    <ClCompile Include="common\to.cpp" />
+    <ClCompile Include="common\trim.cpp" />
     <ClCompile Include="db\cache.cpp" />
     <ClCompile Include="db\day.cpp" />
     <ClCompile Include="db\db.cpp" />
     <ClCompile Include="db\model.cpp" />
     <ClCompile Include="db\measure.cpp" />
+    <ClCompile Include="db\options.cpp" />
     <ClCompile Include="db\save.cpp" />
     <ClCompile Include="imgui\imgui.cpp" />
     <ClCompile Include="imgui\imgui_demo.cpp" />
@@ -152,16 +156,22 @@
   <ItemGroup>
     <ClInclude Include="common\common.hpp" />
     <ClInclude Include="common\concat.hpp" />
+    <ClInclude Include="common\join_through.hpp" />
+    <ClInclude Include="common\numeric.hpp" />
     <ClInclude Include="common\osstream.hpp" />
     <ClInclude Include="common\size_for_output.hpp" />
+    <ClInclude Include="common\split.hpp" />
     <ClInclude Include="common\string_streambuf.hpp" />
     <ClInclude Include="common\time.hpp" />
+    <ClInclude Include="common\to.hpp" />
+    <ClInclude Include="common\trim.hpp" />
     <ClInclude Include="db\cache.hpp" />
     <ClInclude Include="db\day.hpp" />
     <ClInclude Include="db\db.hpp" />
     <ClInclude Include="db\ddl.hpp" />
     <ClInclude Include="db\model.hpp" />
     <ClInclude Include="db\measure.hpp" />
+    <ClInclude Include="db\options.hpp" />
     <ClInclude Include="db\queries.hpp" />
     <ClInclude Include="db\save.hpp" />
     <ClInclude Include="imgui\imconfig.h" />

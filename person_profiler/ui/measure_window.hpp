@@ -16,6 +16,8 @@ struct measure_window : public window_inst {
         return "Measure";
     }
 
+    virtual ImVec2 initial_size() const override { return ImVec2(900, 400); }
+
 private:
 
     void on_new_measure(measure m, measure_group_id mg_id);

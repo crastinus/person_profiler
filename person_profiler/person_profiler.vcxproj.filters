@@ -161,6 +161,18 @@
     <ClCompile Include="ui\helper\date_picker.cpp">
       <Filter>ui\helper</Filter>
     </ClCompile>
+    <ClCompile Include="db\options.cpp">
+      <Filter>db</Filter>
+    </ClCompile>
+    <ClCompile Include="common\split.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\to.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="common\trim.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\opengl\glfw\egl_context.h">
@@ -323,6 +335,24 @@
       <Filter>ui\helper</Filter>
     </ClInclude>
     <ClInclude Include="common\osstream.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="db\options.hpp">
+      <Filter>db</Filter>
+    </ClInclude>
+    <ClInclude Include="common\split.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\join_through.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\to.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\numeric.hpp">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="common\trim.hpp">
       <Filter>common</Filter>
     </ClInclude>
   </ItemGroup>
