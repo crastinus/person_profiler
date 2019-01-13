@@ -198,3 +198,32 @@ int save(measure_group const & mg) {
     // nothing can change
     return mg.id;
 }
+
+void save(measure_comment const & comment) {
+
+    SQLite::Statement select(db(), "SELECT count(*) FROM measure_comment WHERE day_id = :day_id and measure_id = :measure_id");
+    select.bind(":measure_id", comment.measure.id);
+    select.bind(":day_id", comment.day.id);
+    select.executeStep();
+    
+    int count = select.getColumn(0);
+
+    if (count == 0) {
+        SQLite::Statement insert(db(),
+            "INSERT INTO  measure_comment(comment, day_id, measure_id) VALUES(:comment, :day_id, :measure_id)") ;
+
+        insert.bind(":measure_id", comment.measure.id);
+        insert.bind(":day_id", comment.day.id);
+        insert.bind(":comment", comment.comment_text.c_str());
+        insert.executeStep();
+    } else {
+        SQLite::Statement update(db(),
+            "UPDATE  measure_comment SET comment = :comment WHERE day_id = :day_id and measure_id = :measure_id");
+
+        update.bind(":measure_id", comment.measure.id);
+        update.bind(":day_id", comment.day.id);
+        update.bind(":comment", comment.comment_text.c_str());
+        update.executeStep();
+    }
+
+}

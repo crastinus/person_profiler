@@ -5,6 +5,7 @@
 #include "day_type_window.hpp"
 #include "measure_window.hpp"
 #include "estimation_window.hpp"
+#include "diary_window.hpp"
 #include "plan_window.hpp"
 #include "statistics_window.hpp"
 #include "helper/date_picker.hpp"
@@ -32,10 +33,13 @@ void main_window::render() {
         window<statistics_window>();
     }
 
-
-    if (ImGui::Button("day_picker")) {
-        window<date_picker>(0);
+    if (ImGui::Button("diary")) {
+        window<diary_window>();
     }
+
+    //if (ImGui::Button("day_picker")) {
+    //    window<date_picker>(0);
+    //}
 
     // ethernal window
     show_ = true;

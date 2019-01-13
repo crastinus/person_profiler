@@ -173,6 +173,12 @@
     <ClCompile Include="common\trim.cpp">
       <Filter>common</Filter>
     </ClCompile>
+    <ClCompile Include="ui\measure_comment.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
+    <ClCompile Include="ui\diary_window.cpp">
+      <Filter>ui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="imgui\opengl\glfw\egl_context.h">
@@ -354,6 +360,15 @@
     </ClInclude>
     <ClInclude Include="common\trim.hpp">
       <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="model\measure_comment.hpp">
+      <Filter>model</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\measure_comment.hpp">
+      <Filter>ui</Filter>
+    </ClInclude>
+    <ClInclude Include="ui\diary_window.hpp">
+      <Filter>ui</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

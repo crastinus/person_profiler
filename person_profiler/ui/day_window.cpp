@@ -7,6 +7,7 @@
 #include <ui/ui.hpp>
 #include "day_type_window.hpp"
 #include "helper/id_scope.hpp"
+#include "measure_comment.hpp"
 
 static char const* format = "%Y.%m.%d";
 static float date_width = 80;
@@ -117,8 +118,8 @@ void day_window::render() {
             }
 
             for (value_info& vi : vec) {
-                //ImGui::Text(vi.value_name_.c_str());
-                //ImGui::SameLine();
+                
+
                 ImGui::PushItemWidth(200);
                 ImGui::SetCursorPos({ 20, ImGui::GetCursorPos().y });
 
@@ -133,6 +134,18 @@ void day_window::render() {
                         vi.value_.val = static_cast<double>(vi.float_value_);
                     }
                 } break;
+                }
+
+                if (vi.value_.id != 0) {
+                    id_scope push_val_id(vi.value_.id);
+
+                    estimation e = vi.value_.estimation;
+                    measure m = e.measure;
+
+                    ImGui::SameLine();
+                    if (ImGui::Button("Comment")) {
+                        window<measure_comment_window>(measure_id{ m.id }, day_id{ day_.id });
+                    }
                 }
             }
         }

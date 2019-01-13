@@ -72,6 +72,15 @@ CREATE TABLE estimation
 
 CREATE INDEX estimation_active ON estimation(active);
 
+CREATE TABLE measure_comment (
+    measure_id integer NOT NULL,
+    day_id integer NOT NULL,
+    comment text NOT NULL,
+    PRIMARY KEY(measure_id, day_id),
+    FOREIGN KEY(measure_id) REFERENCES measure(id),
+    FOREIGN KEY(day_id) REFERENCES day(id)
+);
+
 
 CREATE TABLE value (
  id            integer PRIMARY KEY AUTOINCREMENT,

@@ -8,12 +8,14 @@ struct value;
 struct measure_group;
 struct measure_values_graph;
 struct measure_graph;
+struct measure_comment;
 
 estimation req_estimation(int id);
 estimation req_find_estimation(int measure_id, int day_type_id);
 measure req_measure(int id);
 value req_value(int id);
 measure_group req_measure_group(int id);
+measure_comment req_measure_comment(int measure_id, int day_id);
 
 bool have_dependencies(estimation const& e);
 bool have_dependencies(measure const& m);

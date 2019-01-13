@@ -6,6 +6,7 @@
 #include <model/estimation.hpp>
 #include <model/measure.hpp>
 #include <model/value.hpp>
+#include <model/measure_comment.hpp>
 #include "measure.hpp"
 #include <model/measure_graph.hpp>
 #include <common/concat.hpp>
@@ -170,6 +171,24 @@ measure_group req_measure_group(int id) {
     result.active = (int)stmt.getColumn(2);
     result.weight = stmt.getColumn(3);
 
+    return result;
+}
+
+measure_comment req_measure_comment(int measure_id, int day_id) {
+
+    measure_comment result;
+    
+    result.day = day_id;
+    result.measure = measure_id;
+
+    SQLite::Statement stmt(db(), "SELECT comment FROM measure_comment WHERE day_id = :day_id and measure_id = :measure_id");
+    stmt.bind(":measure_id", measure_id);
+    stmt.bind(":day_id", day_id);
+    
+    if (stmt.executeStep()) {
+        result.comment_text = stmt.getColumn(0).getString();
+    }
+    
     return result;
 }
 

@@ -143,11 +143,13 @@
     <ClCompile Include="system\system.cpp" />
     <ClCompile Include="ui\day_window.cpp" />
     <ClCompile Include="ui\day_type_window.cpp" />
+    <ClCompile Include="ui\diary_window.cpp" />
     <ClCompile Include="ui\helper\combo_box_content.cpp" />
     <ClCompile Include="ui\helper\date_picker.cpp" />
     <ClCompile Include="ui\helper\input.cpp" />
     <ClCompile Include="ui\estimation_window.cpp" />
     <ClCompile Include="ui\main_window.cpp" />
+    <ClCompile Include="ui\measure_comment.cpp" />
     <ClCompile Include="ui\measure_window.cpp" />
     <ClCompile Include="ui\plan_window.cpp" />
     <ClCompile Include="ui\statistics_window.cpp" />
@@ -194,6 +196,7 @@
     <ClInclude Include="model\day.hpp" />
     <ClInclude Include="model\estimation.hpp" />
     <ClInclude Include="model\measure.hpp" />
+    <ClInclude Include="model\measure_comment.hpp" />
     <ClInclude Include="model\measure_graph.hpp" />
     <ClInclude Include="model\measure_group.hpp" />
     <ClInclude Include="model\value.hpp" />
@@ -201,6 +204,7 @@
     <ClInclude Include="system\system.hpp" />
     <ClInclude Include="ui\day_window.hpp" />
     <ClInclude Include="ui\day_type_window.hpp" />
+    <ClInclude Include="ui\diary_window.hpp" />
     <ClInclude Include="ui\helper\combo_box_content.hpp" />
     <ClInclude Include="ui\helper\date_picker.hpp" />
     <ClInclude Include="ui\helper\date_widget.hpp" />
@@ -210,6 +214,7 @@
     <ClInclude Include="ui\estimation_window.hpp" />
     <ClInclude Include="ui\helper\input_window.hpp" />
     <ClInclude Include="ui\main_window.hpp" />
+    <ClInclude Include="ui\measure_comment.hpp" />
     <ClInclude Include="ui\measure_window.hpp" />
     <ClInclude Include="ui\plan_window.hpp" />
     <ClInclude Include="ui\statistics_window.hpp" />
