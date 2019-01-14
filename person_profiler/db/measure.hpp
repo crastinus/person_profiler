@@ -1,6 +1,7 @@
 #pragma once 
 
 #include <unordered_set>
+#include <map>
 
 struct estimation;
 struct measure;
@@ -16,6 +17,14 @@ measure req_measure(int id);
 value req_value(int id);
 measure_group req_measure_group(int id);
 measure_comment req_measure_comment(int measure_id, int day_id);
+
+// mapping day to map of (measure_id, measure_comment)
+using measure_comment_graph = std::map<time_t, std::map<int, measure_comment>>;
+
+// \brief request to measure comment
+// \param first_day, last_day - days range
+// \return measure graph
+measure_comment_graph req_measure_comment_graph(time_t first_day, time_t last_day);
 
 bool have_dependencies(estimation const& e);
 bool have_dependencies(measure const& m);

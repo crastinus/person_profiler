@@ -46,6 +46,7 @@ void statistics_window::render() {
     float alignment = 0;
     size_t counter = 0;
 
+    // Checkboxes 
     for (auto&[mg_id, vals] : result_info_) {
         (void)vals;
         
@@ -80,6 +81,7 @@ void statistics_window::render() {
     
     counter = 0;
 
+    // header
     ImGui::SetCursorPosX(50);
     for (int meas_id : allowed_measure_groups_) {
 
@@ -94,6 +96,7 @@ void statistics_window::render() {
         
     }
     
+    // actual days 
     for (day const& d : days_) {
         ImGui::PushID(d.id);
         ImGui::Text(format("%m.%d", d.day_timestamp).c_str());

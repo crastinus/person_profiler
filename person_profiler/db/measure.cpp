@@ -72,6 +72,43 @@ estimation req_find_estimation(int measure_id, int day_type_id) {
     return result;
 }
 
+std::map<time_t, std::map<int, measure_comment>> req_measure_comment_graph(time_t first_day, time_t last_day) {
+    std::map<time_t, std::map<int, measure_comment>> result;
+
+    SQLite::Statement select(db(), concat(
+        R"(SELECT d.day, mc.comment, mc.day_id, mc.measure_id, m.name, m.active, m.type, m.measure_group_id, m.comment
+    FROM measure_comment mc
+    JOIN measure m on mc.measure_id = m.id
+    JOIN day d on mc.day_id = d.id
+    WHERE d.day BETWEEN )", first_day, " AND ", last_day));
+
+    while (select.executeStep()) {
+
+        int col = 0;
+
+        time_t day = select.getColumn(col++);
+
+        measure_comment mc;
+        mc.comment_text = select.getColumn(col++).getString();
+        mc.day.id = select.getColumn(col++);
+        mc.measure.id = select.getColumn(col++);        
+
+        measure m;
+        m.id = mc.measure.id;
+        m.name = select.getColumn(col++).getString();
+        m.active = (int)select.getColumn(col++);
+        m.type = static_cast<measure_type>((int)select.getColumn(col++));
+        m.measure_group.id = select.getColumn(col++);
+        m.comment = select.getColumn(col++).getString();
+
+        cache().save(m);
+
+        result[day][m.id] = mc;
+    }
+
+    return result;
+}
+
 bool have_dependencies(estimation const& e) {
     if (e.id == 0) {
         return false;

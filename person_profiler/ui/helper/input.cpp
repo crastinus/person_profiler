@@ -28,14 +28,10 @@ bool input_text::render_multiline() {
 }
 
 void input_text::update() {
+    size_t prealloc = (height_ == 0 ? 1024 : 16384);
     size_t old_size = storage_.size();
-    size_t new_size = (old_size == 0 ? 1024 : old_size * 2 + 1024);
+    size_t new_size = (old_size == 0 ? prealloc : old_size * 2 + prealloc);
     storage_.resize(new_size);
-
-    //data_.resize((storage_.size() + 1) * 2);
-    //std::fill(data_.begin(), data_.end(), 0);
-    //std::copy(storage_.begin(), storage_.end(), data_.begin());
-
 }
 
 void input_text::shrink() {
