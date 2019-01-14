@@ -2,14 +2,31 @@
 #include "helper/id_scope.hpp"
 #include <db/cache.hpp>
 #include <common/time.hpp>
+#include <common/concat.hpp>
+#include <common/to.hpp>
 #include <set>
+#include <db/options.hpp>
+#include <sstream>
+
+static char const* diary_range = "diary_range_option";
+static char const* last_choosen_measure = "diary_last_choosen_measure_option";
 
 diary_window::diary_window()
     : measure_combo_content_({}),
     start_(0, [this](time_t t) {this->on_update_time(true, t); }),
     end_(1, [this](time_t t) {this->on_update_time(false, t); }) {
-    start_.set_time(time(nullptr));
-    end_.set_time(time(nullptr));
+
+    time_t start_ts = time(nullptr), end_ts = time(nullptr);
+
+    auto range = get_option(diary_range);
+    if (!range.empty()) {
+        std::istringstream is(range);
+        is >> start_ts;
+        is >> end_ts;
+    }
+
+    start_.set_time(start_ts);
+    end_.set_time(end_ts);
 }
 
 void diary_window::render() {
@@ -18,6 +35,8 @@ void diary_window::render() {
     end_.render();
     
     if (!measure_combo_content_.empty() && ImGui::Combo("measure", &measure_combo_content_.idx(), measure_combo_content_.content())) {
+       auto& m = measure_by_name_.at(measure_combo_content_.current_element());
+       save_option(last_choosen_measure, concat(m.id));
     }
 
     if (measure_combo_content_.idx() == -1) {
@@ -55,6 +74,8 @@ void diary_window::on_update_time(bool start_time, time_t time) {
         }
     }
 
+    save_option(diary_range, concat(start, " ", end));
+
     if (start == end || start < 0 || end < 0) {
         return;
     }
@@ -74,5 +95,13 @@ void diary_window::on_update_time(bool start_time, time_t time) {
     }
 
     measure_combo_content_.assign(measure_by_name_.begin(), measure_by_name_.end(), [](auto const& p) {return p.first; });
+
+    auto last_measure_id_str = get_option(last_choosen_measure);
+    if (!last_measure_id_str.empty()) {
+        int measure_id = to<int>(last_measure_id_str);
+        auto m = cache().get<measure>(measure_id);
+        measure_combo_content_.setup_element(m->name);
+    }
+
 
 }
